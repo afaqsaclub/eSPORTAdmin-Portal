@@ -15,180 +15,193 @@
             --text-main: #f4f4f5; --text-muted: #a1a1aa;
             --border: #27272a; --danger: #ef4444; --warning: #f59e0b;
             --sidebar-width: 280px;
-            --glass-bg: rgba(24, 24, 27, 0.7);
+            --glass-bg: rgba(24, 24, 27, 0.75);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Tajawal', sans-serif; -webkit-tap-highlight-color: transparent; }
-        body { background-color: var(--bg-main); color: var(--text-main); overflow-x: hidden; line-height: 1.6; }
+        body { background-color: var(--bg-main); color: var(--text-main); overflow-x: hidden; line-height: 1.7; }
 
         /* ================= شاشة الدخول ================= */
-        #loginScreen { position: fixed; inset: 0; z-index: 9999; background: radial-gradient(circle at top left, var(--green-dark) 0%, var(--bg-main) 60%); display: flex; justify-content: center; align-items: center; padding: 20px; transition: opacity 0.5s ease; }
-        .login-box { background: var(--glass-bg); backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.05); border-radius: 24px; padding: 40px 30px; width: 100%; max-width: 400px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
-        .login-box img { width: 90px; margin-bottom: 15px; filter: drop-shadow(0 0 15px rgba(0,170,97,0.3)); }
-        .login-tabs { display: flex; margin-bottom: 30px; background: rgba(0,0,0,0.3); border-radius: 12px; padding: 5px; }
-        .login-tab { flex: 1; padding: 10px; cursor: pointer; color: var(--text-muted); font-weight: 700; border-radius: 8px; transition: 0.3s; font-size: 0.95rem; }
-        .login-tab.active { background: var(--bg-card); color: var(--green-light); box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
-        .login-form { display: none; flex-direction: column; gap: 15px; }
-        .login-form.active { display: flex; animation: fadeInUp 0.4s ease; }
-        .login-input { background: rgba(0,0,0,0.4); border: 1px solid var(--border); color: white; padding: 16px; border-radius: 12px; text-align: center; font-size: 1rem; transition: 0.3s; outline: none; }
-        .login-input:focus { border-color: var(--green-light); box-shadow: 0 0 0 3px rgba(0,170,97,0.15); }
-        .login-btn { background: var(--gradient); border: none; color: white; padding: 16px; border-radius: 12px; font-weight: 800; font-size: 1.1rem; cursor: pointer; transition: 0.3s; display: flex; justify-content: center; gap: 10px; }
-        .login-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,170,97,0.3); }
-        #errorMsg { color: var(--danger); font-size: 0.85rem; margin-top: 15px; display: none; background: rgba(239, 68, 68, 0.1); padding: 10px; border-radius: 8px; }
+        #loginScreen { position: fixed; inset: 0; z-index: 9999; background: radial-gradient(circle at top right, var(--green-dark) 0%, var(--bg-main) 60%); display: flex; justify-content: center; align-items: center; padding: 20px; transition: opacity 0.4s ease, visibility 0.4s; }
+        .login-box { background: var(--glass-bg); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.08); border-radius: 24px; padding: 45px 35px; width: 100%; max-width: 420px; text-align: center; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); }
+        .login-box img { width: 95px; margin-bottom: 20px; filter: drop-shadow(0 0 20px rgba(0,170,97,0.4)); }
+        .login-tabs { display: flex; margin-bottom: 35px; background: rgba(0,0,0,0.4); border-radius: 14px; padding: 6px; }
+        .login-tab { flex: 1; padding: 12px; cursor: pointer; color: var(--text-muted); font-weight: 700; border-radius: 10px; transition: all 0.3s ease; font-size: 0.95rem; }
+        .login-tab.active { background: var(--bg-card); color: var(--green-light); box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+        .login-form { display: none; flex-direction: column; gap: 18px; }
+        .login-form.active { display: flex; animation: fadeInUp 0.4s ease forwards; }
+        .login-input { background: rgba(0,0,0,0.5); border: 1px solid var(--border); color: white; padding: 18px; border-radius: 14px; text-align: center; font-size: 1.05rem; transition: 0.3s; outline: none; }
+        .login-input:focus { border-color: var(--green-light); box-shadow: 0 0 0 4px rgba(0,170,97,0.15); }
+        .login-btn { background: var(--gradient); border: none; color: white; padding: 18px; border-radius: 14px; font-weight: 800; font-size: 1.15rem; cursor: pointer; transition: 0.3s; display: flex; justify-content: center; align-items: center; gap: 12px; }
+        .login-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(0,170,97,0.4); }
+        #errorMsg { color: var(--danger); font-size: 0.9rem; margin-top: 20px; display: none; background: rgba(239, 68, 68, 0.1); padding: 12px; border-radius: 10px; font-weight: 700; border: 1px solid rgba(239, 68, 68, 0.2); }
 
         /* ================= التخطيط الأساسي ================= */
-        #dashboardWrapper { display: none; min-height: 100vh; flex-direction: column; }
-        .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(5px); z-index: 90; opacity: 0; transition: opacity 0.3s ease; }
-        .sidebar-overlay.active { display: block; opacity: 1; }
+        #dashboardWrapper { display: none; min-height: 100vh; flex-direction: column; position: relative; }
         
-        .sidebar { width: var(--sidebar-width); background: var(--bg-card); border-left: 1px solid var(--border); position: fixed; top: 0; right: 0; height: 100vh; display: flex; flex-direction: column; z-index: 100; transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: -5px 0 25px rgba(0,0,0,0.3); }
-        .brand { display: flex; align-items: center; gap: 15px; padding: 30px 25px 20px; border-bottom: 1px solid var(--border); margin-bottom: 15px; }
-        .brand img { width: 45px; }
-        .brand h1 { font-size: 1.2rem; font-weight: 800; }
-        .brand span { font-size: 0.75rem; color: var(--green-light); font-weight: 700; text-transform: uppercase; }
+        .sidebar-overlay { visibility: hidden; position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(4px); z-index: 90; opacity: 0; transition: all 0.3s ease; }
+        .sidebar-overlay.active { visibility: visible; opacity: 1; }
         
-        .nav-menu { display: flex; flex-direction: column; gap: 8px; padding: 0 15px 20px; overflow-y: auto; flex:1; }
-        .nav-menu::-webkit-scrollbar { width: 5px; }
+        .sidebar { width: var(--sidebar-width); background: var(--bg-card); border-left: 1px solid var(--border); position: fixed; top: 0; right: 0; height: 100vh; display: flex; flex-direction: column; z-index: 100; transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); }
+        .brand { display: flex; align-items: center; gap: 15px; padding: 35px 25px 25px; border-bottom: 1px solid var(--border); margin-bottom: 15px; }
+        .brand img { width: 50px; }
+        .brand h1 { font-size: 1.3rem; font-weight: 900; line-height: 1.2;}
+        .brand span { font-size: 0.8rem; color: var(--green-light); font-weight: 800; text-transform: uppercase; letter-spacing: 1px;}
+        
+        .nav-menu { display: flex; flex-direction: column; gap: 6px; padding: 0 15px 20px; overflow-y: auto; flex:1; }
+        .nav-menu::-webkit-scrollbar { width: 4px; }
         .nav-menu::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
         
-        .nav-item { display: flex; align-items: center; gap: 15px; padding: 14px 18px; color: var(--text-muted); text-decoration: none; border-radius: 12px; font-weight: 700; transition: 0.3s; cursor: pointer; }
-        .nav-item i { font-size: 1.2rem; width: 22px; text-align: center; }
-        .nav-item:hover { background: var(--bg-card-hover); color: var(--text-main); }
-        .nav-item.active { background: var(--gradient); color: white; box-shadow: 0 4px 15px rgba(0,170,97,0.25); }
+        .nav-item { display: flex; align-items: center; gap: 15px; padding: 15px 20px; color: var(--text-muted); text-decoration: none; border-radius: 14px; font-weight: 700; transition: all 0.3s ease; cursor: pointer; font-size: 0.95rem; }
+        .nav-item i { font-size: 1.25rem; width: 24px; text-align: center; transition: color 0.3s ease;}
+        .nav-item:hover { background: var(--bg-card-hover); color: var(--text-main); transform: translateX(-5px); }
+        .nav-item.active { background: var(--gradient); color: white; box-shadow: 0 4px 15px rgba(0,170,97,0.3); }
         
-        .logout-box { padding: 20px; border-top: 1px solid var(--border); display: flex; flex-direction: column; gap: 10px; }
-        .logout-btn { width: 100%; background: rgba(239, 68, 68, 0.1); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.2); padding: 14px; border-radius: 12px; font-weight: 800; cursor: pointer; display: flex; justify-content: center; gap: 10px; transition: 0.3s;}
+        .logout-box { padding: 25px; border-top: 1px solid var(--border); background: var(--bg-card); }
+        .logout-btn { width: 100%; background: rgba(239, 68, 68, 0.1); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.2); padding: 15px; border-radius: 14px; font-weight: 800; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 10px; transition: 0.3s; font-size: 1rem;}
+        .logout-btn:hover { background: var(--danger); color: white; transform: translateY(-2px); box-shadow: 0 8px 15px rgba(239, 68, 68, 0.3);}
         
-        .main-content { margin-right: var(--sidebar-width); padding: 30px 40px; flex: 1; transition: 0.3s; width: 100%; }
-        .top-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 35px; background: var(--glass-bg); backdrop-filter: blur(10px); padding: 20px 25px; border-radius: 16px; border: 1px solid var(--border); z-index: 50; }
-        .header-info h2 { font-size: 1.4rem; font-weight: 800; margin-bottom: 5px; }
-        .header-info p { color: var(--text-muted); font-size: 0.9rem; }
-        .user-badge { background: rgba(0,170,97,0.1); border: 1px solid rgba(0,170,97,0.3); color: var(--green-light); padding: 8px 16px; border-radius: 30px; font-size: 0.85rem; font-weight: 800; display: flex; gap: 8px; align-items: center; white-space: nowrap;}
-        .menu-toggle { display: none; background: transparent; border: none; color: white; font-size: 1.5rem; cursor: pointer; }
+        .main-content { margin-right: var(--sidebar-width); padding: 40px 50px; transition: 0.3s; width: calc(100% - var(--sidebar-width)); display: block; min-height: 100vh;}
+        
+        .top-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; background: rgba(24, 24, 27, 0.8); backdrop-filter: blur(12px); padding: 25px 35px; border-radius: 20px; border: 1px solid var(--border); z-index: 50; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .header-info { display: flex; flex-direction: column; gap: 5px; }
+        .header-info h2 { font-size: 1.6rem; font-weight: 900; color: white;}
+        .header-info p { color: var(--text-muted); font-size: 0.95rem; font-weight: 500;}
+        .user-badge { background: rgba(0,170,97,0.1); border: 1px solid rgba(0,170,97,0.3); color: var(--green-light); padding: 10px 20px; border-radius: 14px; font-size: 0.9rem; font-weight: 800; display: flex; gap: 10px; align-items: center;}
+        
+        .menu-toggle { display: none; background: transparent; border: none; color: white; font-size: 1.8rem; cursor: pointer; width: 45px; height: 45px; border-radius: 12px; transition: 0.3s;}
+        .menu-toggle:active { background: var(--border); }
 
-        .page-section { display: none; animation: fadeIn 0.4s ease; padding-bottom: 40px; }
-        .page-section.active { display: block; }
+        .page-section { display: none; animation: fadeIn 0.5s ease forwards; padding-bottom: 50px; width: 100%; }
+        .page-section.active { display: block; } /* التأكد تماماً من أنها Block لتمنع التداخل */
+
         @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* ================= المكونات والأقسام ================= */
-        .section-title { margin-bottom: 25px; border-right: 4px solid var(--green-light); padding-right: 15px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
-        .section-title h2 { font-size: 1.3rem; font-weight: 800; }
-        .section-subtitle { margin: 35px 0 20px; font-size: 1.1rem; color: var(--text-muted); font-weight: 700; display:flex; align-items:center; gap:8px;}
-        .section-subtitle::before { content: ''; display: block; width: 8px; height: 8px; background: var(--green-light); border-radius: 50%; }
+        /* ================= المكونات والشبكات العصرية ================= */
+        .section-title { width: 100%; margin-bottom: 30px; border-right: 5px solid var(--green-light); padding-right: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
+        .section-title h2 { font-size: 1.4rem; font-weight: 900; letter-spacing: -0.5px;}
+        
+        .section-subtitle { width: 100%; margin: 40px 0 25px; font-size: 1.15rem; color: var(--text-muted); font-weight: 800; display:flex; align-items:center; gap:10px; clear: both;}
+        .section-subtitle::before { content: ''; display: block; width: 8px; height: 8px; background: var(--green-light); border-radius: 50%; box-shadow: 0 0 10px var(--green-light); }
 
-        .grid-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 15px; margin-bottom: 35px; }
-        .action-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 20px; display: flex; align-items: center; gap: 18px; text-decoration: none; color: inherit; transition: 0.3s; }
-        .action-card:hover { transform: translateY(-4px); border-color: var(--green-light); background: var(--bg-card-hover); }
-        .icon-box { min-width: 50px; width: 50px; height: 50px; border-radius: 14px; background: rgba(0, 170, 97, 0.1); display: flex; justify-content: center; align-items: center; font-size: 1.3rem; color: var(--green-light); transition: 0.3s; }
-        .card-info h3 { font-size: 1rem; margin-bottom: 3px; }
-        .card-info p { font-size: 0.8rem; color: var(--text-muted); }
+        /* شبكة الكروت المحسنة */
+        .grid-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-bottom: 40px; width: 100%; }
+        .action-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px; padding: 25px; display: flex; align-items: center; gap: 20px; text-decoration: none; color: inherit; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 5px 15px rgba(0,0,0,0.1); width: 100%; }
+        .action-card:hover { transform: translateY(-5px); border-color: var(--green-light); background: var(--bg-card-hover); box-shadow: 0 12px 25px rgba(0,0,0,0.3); }
+        .icon-box { min-width: 65px; width: 65px; height: 65px; border-radius: 16px; background: rgba(0, 170, 97, 0.1); display: flex; justify-content: center; align-items: center; font-size: 1.6rem; color: var(--green-light); transition: 0.3s; flex-shrink: 0;}
+        .card-info { flex: 1; display: flex; flex-direction: column; gap: 6px; overflow: hidden;}
+        .card-info h3 { font-size: 1.1rem; font-weight: 800; color: white; line-height: 1.3; margin: 0;}
+        .card-info p { font-size: 0.85rem; color: var(--text-muted); font-weight: 500; margin: 0;}
 
-        .action-card.danger { border-color: rgba(239,68,68,0.3); }
-        .action-card.danger .icon-box { color: var(--danger); background: rgba(239, 68, 68, 0.1); }
+        .action-card.danger { border-color: rgba(239,68,68,0.2); }
         .action-card.danger:hover { border-color: var(--danger); }
+        .action-card.danger .icon-box { background: rgba(239, 68, 68, 0.1); color: var(--danger); }
         .action-card.danger:hover .icon-box { background: var(--danger); color: white; }
         
-        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; margin-bottom: 35px; }
-        .stat-card { background: var(--gradient); border-radius: 20px; padding: 30px 25px; position: relative; overflow: hidden; }
-        .stat-card.outline { background: var(--bg-card); border: 1px solid rgba(0,170,97,0.5); }
-        .stat-num { font-size: 3rem; font-weight: 900; color: white; line-height: 1; margin-bottom: 10px; }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-bottom: 45px; width: 100%; }
+        .stat-card { background: var(--gradient); border-radius: 24px; padding: 40px 35px; position: relative; overflow: hidden; box-shadow: 0 10px 30px rgba(0,170,97,0.2); display: flex; flex-direction: column; gap: 10px;}
+        .stat-card::after { content: '\f0c0'; font-family: "Font Awesome 6 Free"; font-weight: 900; position: absolute; left: -20px; top: 10%; font-size: 8rem; color: rgba(255,255,255,0.1); transform: rotate(-15deg); }
+        .stat-card.outline { background: var(--bg-card); border: 1px solid rgba(0,170,97,0.4); box-shadow: none;}
+        .stat-card.outline::after { content: '\f508'; color: rgba(0,170,97,0.05); }
+        .stat-num { font-size: 4rem; font-weight: 900; color: white; line-height: 1; z-index: 2; }
         .stat-card.outline .stat-num { color: var(--green-light); }
-        .stat-label { font-size: 1rem; font-weight: 700; color: rgba(255,255,255,0.9); }
+        .stat-label { font-size: 1.15rem; font-weight: 800; color: rgba(255,255,255,0.9); z-index: 2;}
         .stat-card.outline .stat-label { color: var(--text-muted); }
 
-        .mini-stats-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 12px; margin-bottom: 40px; }
-        .mini-stat { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 20px 15px; text-align: center; transition: 0.3s; }
-        .mini-stat i { font-size: 1.8rem; color: var(--text-muted); margin-bottom: 12px; transition: 0.3s; }
-        .mini-stat:hover { border-color: var(--green-light); transform: translateY(-4px); }
-        .mini-stat:hover i { color: var(--green-light); }
-        .mini-stat .num { font-size: 1.6rem; font-weight: 900; line-height: 1; }
-        .mini-stat .label { font-size: 0.8rem; color: var(--text-muted); margin-top: 8px; }
+        .mini-stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 15px; margin-bottom: 50px; width: 100%; }
+        .mini-stat { background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px; padding: 25px 20px; text-align: center; transition: all 0.3s ease; display: flex; flex-direction: column; align-items: center; justify-content: center;}
+        .mini-stat i { font-size: 2rem; color: var(--text-muted); margin-bottom: 15px; transition: 0.3s; }
+        .mini-stat:hover { border-color: var(--green-light); transform: translateY(-5px); background: var(--bg-card-hover); box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
+        .mini-stat:hover i { color: var(--green-light); transform: scale(1.1);}
+        .mini-stat .num { font-size: 1.8rem; font-weight: 900; line-height: 1; color: white; margin-bottom: 5px;}
+        .mini-stat .label { font-size: 0.85rem; color: var(--text-muted); font-weight: 700;}
 
         /* المهام (Kanban) */
-        .tasks-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px; align-items: start; }
-        .task-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 22px; position: relative; transition: 0.3s; display:flex; flex-direction: column; }
-        .task-card:hover { border-color: var(--green-light); transform: translateY(-3px); }
-        .priority-badge { position: absolute; top: 22px; left: 22px; padding: 4px 12px; border-radius: 6px; font-size: 0.75rem; font-weight: 800; color: #fff; text-transform: uppercase; }
-        .high { background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); }
-        .medium { background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); }
-        .low { background: rgba(0, 170, 97, 0.2); color: var(--green-light); border: 1px solid rgba(0, 170, 97, 0.3); }
+        .tasks-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; align-items: start; width: 100%; }
+        .task-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px; padding: 25px; position: relative; transition: 0.3s; display:flex; flex-direction: column; box-shadow: 0 5px 15px rgba(0,0,0,0.1);}
+        .task-card:hover { border-color: var(--green-light); transform: translateY(-3px); box-shadow: 0 10px 25px rgba(0,0,0,0.3);}
+        .priority-badge { position: absolute; top: 25px; left: 25px; padding: 6px 14px; border-radius: 8px; font-size: 0.8rem; font-weight: 800; letter-spacing: 0.5px; }
+        .high { background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); }
+        .medium { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); }
+        .low { background: rgba(0, 170, 97, 0.15); color: var(--green-light); border: 1px solid rgba(0, 170, 97, 0.3); }
         
-        .task-title { font-size: 1.15rem; font-weight: 800; margin-bottom: 20px; padding-left: 80px; border-bottom: 1px dashed var(--border); padding-bottom: 15px; }
-        .task-field { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 10px; display: flex; justify-content: space-between; gap:10px;}
-        .task-field strong { color: var(--text-main); white-space: nowrap;}
+        .task-title { font-size: 1.25rem; font-weight: 900; margin-bottom: 20px; padding-left: 85px; border-bottom: 1px dashed var(--border); padding-bottom: 20px; color: white; line-height: 1.4;}
+        .task-field { font-size: 0.95rem; color: var(--text-muted); margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; gap:10px; border-bottom: 1px solid rgba(255,255,255,0.02); padding-bottom: 8px;}
+        .task-field strong { color: var(--text-main); white-space: nowrap; font-weight: 700;}
         
-        .btn-delete { margin-top: 20px; width: 100%; padding: 12px; cursor: pointer; border: 1px solid var(--border); border-radius: 10px; background: transparent; color: var(--text-muted); font-weight: 800; transition: 0.3s; display: flex; justify-content: center; gap: 8px; }
-        .btn-delete:hover { background: rgba(239, 68, 68, 0.1); border-color: rgba(239, 68, 68, 0.3); color: var(--danger); }
-        .btn-primary { background: var(--green-light); color: var(--bg-main); padding: 10px 20px; border-radius: 10px; font-weight: 800; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 8px; transition: 0.3s; border: none; cursor: pointer; }
-        .btn-primary:hover { box-shadow: 0 4px 15px rgba(0,170,97,0.3); transform: translateY(-2px); }
-        
+        .btn-delete { margin-top: 25px; width: 100%; padding: 14px; cursor: pointer; border: 1px solid var(--border); border-radius: 12px; background: rgba(255,255,255,0.03); color: var(--text-muted); font-weight: 800; transition: 0.3s; display: flex; justify-content: center; align-items: center; gap: 10px; font-size: 0.95rem; }
+        .btn-delete:hover { background: rgba(0, 170, 97, 0.1); border-color: rgba(0, 170, 97, 0.4); color: var(--green-light); }
+        .btn-primary { background: var(--green-light); color: var(--bg-main); padding: 12px 25px; border-radius: 12px; font-weight: 800; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 10px; transition: 0.3s; border: none; cursor: pointer; font-size: 1rem; }
+        .btn-primary:hover { box-shadow: 0 8px 20px rgba(0,170,97,0.3); transform: translateY(-2px); background: #00cc74;}
+
         /* التقويم والمناسبات */
-        .calendar-wrapper { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; margin-bottom: 40px; }
-        .embed-container { background: var(--bg-card); border-radius: 16px; border: 1px solid var(--border); overflow: hidden; height: 500px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+        .calendar-wrapper { display: flex; flex-wrap: wrap; gap: 25px; margin-bottom: 50px; width: 100%; align-items: stretch;}
+        .embed-container { background: var(--bg-card); border-radius: 24px; border: 1px solid var(--border); overflow: hidden; height: 550px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); flex: 2; min-width: 300px; width: 100%; }
         .embed-container iframe { width: 100%; height: 100%; border: none; }
         
-        .events-list { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 20px; height: 500px; overflow-y: auto; }
-        .events-list::-webkit-scrollbar { width: 5px; }
+        .events-list { background: var(--bg-card); border: 1px solid var(--border); border-radius: 24px; padding: 30px 25px; height: 550px; overflow-y: auto; box-shadow: 0 10px 30px rgba(0,0,0,0.2); flex: 1; min-width: 300px; width: 100%; }
+        .events-list::-webkit-scrollbar { width: 4px; }
         .events-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
-        .event-item { display: flex; align-items: center; gap: 15px; padding: 15px 0; border-bottom: 1px dashed var(--border); }
+        .event-item { display: flex; align-items: center; gap: 18px; padding: 18px 0; border-bottom: 1px dashed var(--border); }
         .event-item:last-child { border-bottom: none; }
-        .event-date { background: rgba(0, 170, 97, 0.1); color: var(--green-light); padding: 10px; border-radius: 10px; text-align: center; min-width: 65px; font-weight: 800; line-height: 1.2; border: 1px solid rgba(0,170,97,0.2); }
-        .event-date span { display: block; font-size: 0.75rem; font-weight: 400; color: var(--text-muted); }
-        .event-name { font-weight: 700; font-size: 0.95rem; }
+        .event-date { background: rgba(0, 170, 97, 0.1); color: var(--green-light); padding: 12px; border-radius: 14px; text-align: center; min-width: 75px; font-weight: 900; line-height: 1.2; border: 1px solid rgba(0,170,97,0.2); font-size: 1.2rem;}
+        .event-date span { display: block; font-size: 0.8rem; font-weight: 700; color: var(--text-muted); margin-top: 3px;}
+        .event-name { font-weight: 800; font-size: 1.05rem; color: white; line-height: 1.4;}
 
         /* السياسات العامة */
-        .policy-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 30px; margin-bottom: 20px; }
-        .policy-card h3 { color: var(--green-light); margin-bottom: 15px; font-size: 1.2rem; display: flex; align-items: center; gap: 10px; }
-        .policy-card p { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 10px; }
-        .policy-card ul { list-style: none; padding: 0; }
-        .policy-card ul li { color: var(--text-main); font-size: 0.95rem; margin-bottom: 10px; padding-right: 20px; position: relative; }
-        .policy-card ul li::before { content: '\f0da'; font-family: "Font Awesome 6 Free"; font-weight: 900; position: absolute; right: 0; color: var(--green-light); }
+        .policy-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px; padding: 35px; margin-bottom: 25px; box-shadow: 0 5px 20px rgba(0,0,0,0.15); width: 100%;}
+        .policy-card h3 { color: var(--green-light); margin-bottom: 20px; font-size: 1.3rem; font-weight: 900; display: flex; align-items: center; gap: 12px; }
+        .policy-card p { color: var(--text-muted); font-size: 1rem; margin-bottom: 15px; font-weight: 500; }
+        .policy-card ul { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 15px;}
+        .policy-card ul li { color: var(--text-main); font-size: 1rem; padding-right: 25px; position: relative; font-weight: 500;}
+        .policy-card ul li::before { content: '\f0da'; font-family: "Font Awesome 6 Free"; font-weight: 900; position: absolute; right: 0; top: 2px; color: var(--green-light); font-size: 1.1rem;}
         
-        .table-responsive { width: 100%; overflow-x: auto; margin-top: 15px; border-radius: 12px; border: 1px solid var(--border); }
-        .styled-table { width: 100%; border-collapse: collapse; text-align: right; min-width: 650px; } /* ضمان عدم تعجن الجدول في الجوال */
-        .styled-table th, .styled-table td { padding: 15px; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
-        .styled-table th { background: var(--bg-card-hover); color: white; font-weight: 800; }
-        .styled-table tr:hover { background: rgba(255,255,255,0.02); }
-        .badge-danger { background: rgba(239,68,68,0.1); color: var(--danger); padding: 5px 10px; border-radius: 6px; font-size: 0.8rem; font-weight: 700; border: 1px solid rgba(239,68,68,0.2); display: inline-block; white-space: nowrap;}
-        .badge-warning { background: rgba(245,158,11,0.1); color: var(--warning); padding: 5px 10px; border-radius: 6px; font-size: 0.8rem; font-weight: 700; border: 1px solid rgba(245,158,11,0.2); display: inline-block; white-space: nowrap;}
+        .table-responsive { width: 100%; overflow-x: auto; margin-top: 25px; border-radius: 16px; border: 1px solid var(--border); }
+        .styled-table { width: 100%; border-collapse: collapse; text-align: right; min-width: 700px; } 
+        .styled-table th, .styled-table td { padding: 18px; border-bottom: 1px solid var(--border); font-size: 0.95rem; }
+        .styled-table th { background: rgba(255,255,255,0.03); color: white; font-weight: 800; font-size: 1rem;}
+        .styled-table tr:hover td { background: rgba(0,170,97,0.02); }
+        .badge-danger { background: rgba(239,68,68,0.1); color: #f87171; padding: 6px 14px; border-radius: 8px; font-size: 0.85rem; font-weight: 800; border: 1px solid rgba(239,68,68,0.2); display: inline-block; white-space: nowrap;}
+        .badge-warning { background: rgba(245,158,11,0.1); color: #fbbf24; padding: 6px 14px; border-radius: 8px; font-size: 0.85rem; font-weight: 800; border: 1px solid rgba(245,158,11,0.2); display: inline-block; white-space: nowrap;}
 
         /* الملاحظات */
-        .textarea-notes { width:100%; height:350px; background:var(--bg-card-hover); color:var(--text-main); border:1px solid var(--border); border-radius:16px; padding:20px; font-size:1rem; resize:vertical; outline:none; transition:0.3s; line-height: 1.8;}
-        .textarea-notes:focus { border-color: var(--green-light); box-shadow: 0 0 0 3px rgba(0,170,97,0.15); }
+        .textarea-notes { width:100%; height:450px; background: rgba(0,0,0,0.3); color: white; border:1px solid var(--border); border-radius:20px; padding:25px; font-size:1.05rem; resize:vertical; outline:none; transition:0.3s; line-height: 1.8; font-weight: 500;}
+        .textarea-notes:focus { border-color: var(--green-light); box-shadow: 0 0 0 4px rgba(0,170,97,0.15); background: var(--bg-card); }
 
-        /* ================= الهاتف الذكي والواجهة (UI/UX) ================= */
+        /* ================= الهاتف الذكي والواجهة ================= */
         @media (max-width: 992px) {
-            .sidebar { transform: translateX(100%); width: 280px; border-right: none; }
-            .sidebar.active { transform: translateX(0); }
+            .sidebar { transform: translateX(110%); width: 280px; box-shadow: none; border-left: none; border-right: 1px solid var(--border);}
+            .sidebar.active { transform: translateX(0); box-shadow: -10px 0 40px rgba(0,0,0,0.5); }
             
-            /* تفريغ التداخل الأعلى وإعطاء مساحة للهيدر الثابت */
-            .main-content { margin-right: 0; padding: 15px; padding-top: 100px; width: 100%; } 
+            .main-content { margin-right: 0; padding: 20px 15px; padding-top: 110px; width: 100%; } 
             
-            /* الهيدر العلوي أصبح معلقاً (Sticky) وبتصميم زجاجي ممتاز */
-            .top-header { position: fixed; top: 10px; right: 15px; left: 15px; padding: 15px 20px; margin-bottom: 0; box-shadow: 0 10px 20px rgba(0,0,0,0.4); z-index: 80; }
+            .top-header { position: fixed; top: 12px; right: 15px; left: 15px; padding: 18px 20px; margin-bottom: 0; box-shadow: 0 15px 35px rgba(0,0,0,0.4); z-index: 80; border-radius: 18px; margin-right: 0;}
             
-            /* إخفاء الوصف الطويل في الهاتف */
             .header-info p { display: none; } 
-            .header-info h2 { font-size: 1.15rem; margin-bottom: 0; }
+            .header-info h2 { font-size: 1.25rem; margin-bottom: 0; }
             .user-badge span { display: none; } 
-            .user-badge i { font-size: 1.1rem; margin:0;}
+            .user-badge { padding: 8px; border-radius: 10px; justify-content: center;}
+            .user-badge i { font-size: 1.2rem; margin:0;}
             
             .menu-toggle { display: block; }
             
-            /* تعديل الشبكات لعدم كسر الشاشة */
-            .stats-grid { grid-template-columns: 1fr; }
-            .mini-stats-grid { grid-template-columns: repeat(2, 1fr); }
-            .grid-cards { grid-template-columns: 1fr; }
-            .calendar-wrapper { grid-template-columns: 1fr; }
-            .embed-container, .events-list { height: 400px; }
+            .stats-grid { grid-template-columns: 1fr; gap: 15px;}
+            .stat-card { padding: 30px 25px;}
             
-            .section-title { flex-direction: column; align-items: flex-start; }
-            .section-title .btn-primary { width: 100%; margin-top: 10px; }
+            .mini-stats-grid { grid-template-columns: repeat(2, 1fr); gap: 12px;}
+            .grid-cards { grid-template-columns: 1fr; gap: 15px;}
+            .action-card { padding: 20px; }
             
-            /* تحسين شكل السياسات وكروت الموارد في الجوال */
-            .policy-card { padding: 20px 15px; }
-            .action-card { padding: 15px; }
+            .calendar-wrapper { flex-direction: column; gap: 20px;}
+            .embed-container, .events-list { height: 450px; flex: none; width: 100%;}
+            
+            .section-title { flex-direction: column; align-items: flex-start; gap: 10px; margin-bottom: 20px;}
+            .section-title h2 { font-size: 1.2rem; }
+            .section-title .btn-primary { width: 100%; margin-top: 10px; padding: 14px;}
+            
+            .policy-card { padding: 25px 20px; }
+            .tasks-container { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -199,8 +212,8 @@
         <div class="login-box">
             <img src="https://i.ibb.co/TMVG5JMr/white-logo.png" alt="Afaq Logo">
             <h2 style="font-weight: 900;">مركز القيادة</h2>
-            <p style="color:var(--text-muted); margin-bottom: 5px; font-size: 0.95rem;">لفريق الرياضات الإلكترونية</p>
-            <p style="color:var(--green-light); margin-bottom: 30px; font-size: 0.8rem; font-weight: 800;">POWERED BY AFAQ CLUB</p>
+            <p style="color:var(--text-muted); margin-bottom: 5px; font-size: 1rem; font-weight: 500;">لفريق الرياضات الإلكترونية</p>
+            <p style="color:var(--green-light); margin-bottom: 35px; font-size: 0.85rem; font-weight: 900; letter-spacing: 1px;">POWERED BY AFAQ CLUB</p>
             
             <div class="login-tabs">
                 <div class="login-tab active" onclick="switchLoginTab('manager')">المدير العام</div>
@@ -237,11 +250,10 @@
                 <a class="nav-item" onclick="showPage('page-policies', this)"><i class="fa-solid fa-scale-balanced"></i> <span>السياسات العامة</span></a>
                 <a class="nav-item" onclick="showPage('page-notes', this)"><i class="fa-solid fa-note-sticky"></i> <span>ملاحظاتي الخاصة</span></a>
 
-                <div style="height: 1px; background: rgba(255,255,255,0.05); margin: 10px 0;"></div>
+                <div style="height: 1px; background: rgba(255,255,255,0.05); margin: 15px 15px;"></div>
                 
                 <a class="nav-item manager-only" onclick="showPage('page-manager', this)"><i class="fa-solid fa-briefcase"></i> <span>إدارة النادي</span></a>
-                <!-- زر المعاينة مخفي تماماً بالافتراض -->
-                <a id="previewBtn" class="nav-item" onclick="toggleAdminPreview()" style="display: none;"><i class="fa-solid fa-eye"></i> <span>معاينة واجهة الإداري</span></a>
+                <a id="previewBtn" class="nav-item manager-only" onclick="toggleAdminPreview()" style="display: none;"><i class="fa-solid fa-eye"></i> <span>معاينة واجهة الإداري</span></a>
             </nav>
 
             <div class="logout-box">
@@ -251,7 +263,7 @@
 
         <main class="main-content">
             <header class="top-header">
-                <div style="display: flex; align-items: center; gap: 15px;">
+                <div style="display: flex; align-items: center; gap: 20px;">
                     <button class="menu-toggle" onclick="toggleSidebar()"><i class="fa-solid fa-bars-staggered"></i></button>
                     <div class="header-info">
                         <h2 id="welcomeText">مركز القيادة</h2>
@@ -275,7 +287,7 @@
                  </div>
                 </div>
 
-                <div class="section-title"><h2>القوة الضاربة</h2></div>
+                <div class="section-title"><h2>القوة الضاربة (معدل توزيع الألعاب)</h2></div>
                 <div class="mini-stats-grid">
                     <div class="mini-stat"><i class="fa-solid fa-futbol"></i><div class="num" id="g-eafc">-</div><div class="label">EA FC</div></div>
                     <div class="mini-stat"><i class="fa-solid fa-cubes"></i><div class="num" id="g-mc">-</div><div class="label">Minecraft</div></div>
@@ -290,71 +302,90 @@
                 <div class="calendar-wrapper">
                     <div class="embed-container"><iframe src="https://calendar.google.com/calendar/embed?src=23d87417ba91caca1cc0b90940e951b82a35f165e44e2dbf090e9963128ecf9c@group.calendar.google.com&ctz=Asia/Riyadh&bgcolor=%2318181b&color=%2300aa61"></iframe></div>
                     <div class="events-list">
-                        <h3 style="margin-bottom: 15px; color: white; border-bottom: 1px solid var(--border); padding-bottom: 10px;">أجندة المناسبات</h3>
+                        <h3 style="margin-bottom: 20px; color: white; border-bottom: 1px solid var(--border); padding-bottom: 15px; font-weight: 900;">أجندة المناسبات</h3>
                         <div class="event-item"><div class="event-date">1 <span>يناير</span></div><div class="event-name">رأس السنة الميلادية</div></div>
                         <div class="event-item"><div class="event-date">24 <span>يناير</span></div><div class="event-name">اليوم الدولي للتعليم</div></div>
                         <div class="event-item"><div class="event-date">22 <span>فبراير</span></div><div class="event-name">يوم التأسيس السعودي</div></div>
-                        <div class="event-item"><div class="event-date">- <span>رمضان</span></div><div class="event-name">دخول شهر رمضان</div></div>
+                        <div class="event-item"><div class="event-date">- <span>رمضان</span></div><div class="event-name">دخول شهر رمضان المٌبارك</div></div>
                         <div class="event-item"><div class="event-date">8 <span>مارس</span></div><div class="event-name">اليوم العالمي للمرأة</div></div>
                         <div class="event-item"><div class="event-date">11 <span>مارس</span></div><div class="event-name">يوم العلم السعودي</div></div>
                         <div class="event-item"><div class="event-date">- <span>شوال</span></div><div class="event-name">عيد الفطر المبارك</div></div>
+                        <div class="event-item"><div class="event-date">21 <span>مارس</span></div><div class="event-name">يوم الأم</div></div>
+                        <div class="event-item"><div class="event-date">- <span>ذو الحجة</span></div><div class="event-name">عيد الأضحى المبارك</div></div>
+                        <div class="event-item"><div class="event-date">- <span>محرم</span></div><div class="event-name">رأس السنة الهجرية</div></div>
                         <div class="event-item"><div class="event-date">23 <span>سبتمبر</span></div><div class="event-name">اليوم الوطني السعودي</div></div>
-                        <div class="event-item"><div class="event-date">12 <span>نوفمبر</span></div><div class="event-name" style="color:var(--green-light)">ذكرى تأسيس آفاق</div></div>
+                        <div class="event-item"><div class="event-date">10 <span>أكتوبر</span></div><div class="event-name">اليوم العالمي للصحة النفسية</div></div>
+                        <div class="event-item"><div class="event-date">10 <span>نوفمبر</span></div><div class="event-name">اليوم العالمي للعلوم</div></div>
+                        <div class="event-item"><div class="event-date">12 <span>نوفمبر</span></div><div class="event-name" style="color:var(--green-light)">ذكرى تأسيس وتدشين نادي آفاق</div></div>
+                        <div class="event-item"><div class="event-date">10 <span>ديسمبر</span></div><div class="event-name">اليوم العالمي لحقوق الإنسان</div></div>
+                        <div class="event-item"><div class="event-date">18 <span>ديسمبر</span></div><div class="event-name">اليوم العالمي للغة العربية</div></div>
                     </div>
                 </div>
             </div>
 
             <!-- الصفحة 2: السياسات كاملة -->
             <div id="page-policies" class="page-section">
-                <div class="section-title"><h2>السياسات العامة لنادي آفاق (الإصدار الثالث)</h2></div>
+                <div class="section-title"><h2>السياسات العامة لنادي آفاق (الإصدار الثالث الكامل)</h2></div>
                 
                 <div class="policy-card">
                     <h3><i class="fa-solid fa-bullseye"></i> رسالة وفكرة النادي</h3>
                     <p>نادي آفاق هو مجتمع شبابي تفاعلي يجمع أصحاب الشغف في مكان واحد، لكسر الحواجز الجغرافية وتوفير مساحة للتجربة وإطلاق المبادرات.</p>
                     <p>يسعى النادي ليكون بيئة محفزة تحتضن الهواة والمهتمين وتطور مهاراتهم وتشجع الابتكار والانتماء.</p>
-                    <div style="margin-top: 15px; padding: 15px; background: rgba(0, 170, 97, 0.05); border-radius: 10px; border: 1px dashed var(--green-light);">
-                        <strong style="color: white;">مبادئ آفاق:</strong> 
-                        <span style="color:var(--green-light)">الانتماء</span> | <span style="color:var(--green-light)">التعاون</span> | <span style="color:var(--green-light)">الابتكار</span> | <span style="color:var(--green-light)">الجودة</span> | <span style="color:var(--green-light)">الأثر</span>
+                    <div style="margin-top: 20px; padding: 20px; background: rgba(0, 170, 97, 0.05); border-radius: 14px; border: 1px dashed var(--green-light);">
+                        <strong style="color: white; font-size:1.1rem; display:block; margin-bottom:10px;">مبادئ آفاق:</strong> 
+                        <span style="color:var(--green-light); font-weight:800;">الانتماء</span> | 
+                        <span style="color:var(--green-light); font-weight:800;">التعاون</span> | 
+                        <span style="color:var(--green-light); font-weight:800;">الابتكار</span> | 
+                        <span style="color:var(--green-light); font-weight:800;">الجودة</span> | 
+                        <span style="color:var(--green-light); font-weight:800;">الأثر</span>
                     </div>
                 </div>
 
                 <div class="policy-card">
-                    <h3><i class="fa-solid fa-scale-balanced"></i> لائحة السياسات العامة</h3>
+                    <h3><i class="fa-solid fa-scale-balanced"></i> لائحة السياسات العامة الشاملة</h3>
                     <ul>
-                        <li><strong>سياسة الالتزام:</strong> يلتزم جميع منسوبي النادي بالأنظمة، والجهل بها غير مبرر، ويطبق مبدأ العدالة على الجميع.</li>
-                        <li><strong>سياسة السلوك:</strong> التعامل باحترام، ويمنع التنمر والإساءة واستخدام ألفاظ غير لائقة، ويدار الاختلاف بحضارة.</li>
-                        <li><strong>سياسة العضوية:</strong> العضوية تطوعية مرتبطة بالالتزام بالقيم، ويحق للإدارة القبول أو الرفض.</li>
-                        <li><strong>سياسة التمثيل:</strong> يُمنع استخدام اسم وشعار النادي بدون إذن مسبق.</li>
-                        <li><strong>سياسة مسؤولية المهام:</strong> المناصب تكليف، ويحاسب المقصر عن إهماله.</li>
-                        <li><strong>الخصوصية:</strong> يمنع تسريب تفاصيل المحادثات والقرارات الإدارية لخارج النادي.</li>
+                        <li><strong>سياسة الالتزام:</strong> يلتزم جميع منسوبي النادي بالأنظمة، والجهل بها غير مبرر، ويطبق مبدأ العدالة والمساواة على الجميع للارتقاء ببيئة النادي.</li>
+                        <li><strong>سياسة السلوك:</strong> التعامل باحترام متبادل، ويُمنع منعاً باتاً التنمر، الإساءة، استخدام ألفاظ غير لائقة، أو إثارة النعرات. يُدار الاختلاف بحضارة ورقّي.</li>
+                        <li><strong>سياسة العضوية:</strong> العضوية تطوعية مرتبطة بالالتزام بقيم وأهداف آفاق، يحق للإدارة العليا القبول أو الرفض أو إنهاء العضوية، ويجب على كل عضو الحفاظ على سمعة النادي محلياً وخارجياً.</li>
+                        <li><strong>سياسة التمثيل الخارجي:</strong> يُمنع استخدام اسم، أو شعار، أو صفة النادي في أي منصة، بطولة، أو شراكة خارجية بدون إذن واعتماد مسبق من الإدارة العليا.</li>
+                        <li><strong>سياسة تنظيم الأنشطة:</strong> جميع الأنشطة والبطولات والمبادرات تخضع لموافقة تنظيمية ويجب أن تتوافق مع الخطط الاستراتيجية وأهداف النادي العامة ولا تتعارض مع مبادئه.</li>
+                        <li><strong>سياسة المسؤوليات الإدارية:</strong> المناصب الإدارية هي تكليف تنظيمي لخدمة الأعضاء وليست تشريفاً أو سلطة شخصية، ويُحاسب المقصر عن إهماله واجباته وفق تقارير الأداء.</li>
+                        <li><strong>سياسة الخصوصية وسرية المعلومات:</strong> تُحترم خصوصية جميع الأعضاء وبياناتهم. يُمنع منعاً باتاً تسريب المحادثات الخاصة، الخطط، أو الوثائق الداخلية والقرارات للإدارة خارج النطاق الداخلي الرسمي.</li>
                     </ul>
                 </div>
 
                 <div class="policy-card">
-                    <h3><i class="fa-solid fa-triangle-exclamation"></i> جدول المخالفات والعقوبات الإدارية</h3>
+                    <h3><i class="fa-solid fa-triangle-exclamation"></i> جدول تصنيف المخالفات والعقوبات الإدارية</h3>
                     <div class="table-responsive">
                         <table class="styled-table">
                             <thead>
                                 <tr>
-                                    <th>المخالفة</th>
-                                    <th>الوصف المبسط</th>
-                                    <th>الإجراء الأول</th>
-                                    <th>عند التكرار</th>
+                                    <th>نوع المخالفة</th>
+                                    <th>الوصف المفصل</th>
+                                    <th>العقوبة الأولى</th>
+                                    <th>عند التكرار (المرحلة الثانية)</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr style="background: rgba(255,255,255,0.03)"><td colspan="4" style="text-align: center; color: white;"><strong>المخالفات البسيطة والمتوسطة</strong></td></tr>
-                                <tr><td>اللفظ غير اللائق</td><td>استخدام ألفاظ مسيئة أو مستفزة</td><td>تنبيه شفهي</td><td>إنذار مكتوب</td></tr>
-                                <tr><td>الإزعاج (Spam)</td><td>تكرار الرسائل والمنشن بلا هدف</td><td>تنبيه</td><td>كتم (Mute) مؤقت</td></tr>
-                                <tr><td>التقصير الإداري</td><td>تأخر أو إهمال المهام</td><td>إنذار</td><td>إعفاء من المنصب</td></tr>
+                                <tr style="background: rgba(255,255,255,0.05)"><td colspan="4" style="text-align: center; color: white; font-weight: 900; letter-spacing: 1px;">المخالفات الإدارية البسيطة</td></tr>
+                                <tr><td>استخدام ألفاظ غير لائقة</td><td>التلفظ بكلمات غير مناسبة للنادي ولكن دون توجيه إساءة مباشرة لعضو بعينه.</td><td>تنبيه شفهي مسجّل</td><td>إنذار إداري مكتوب</td></tr>
+                                <tr><td>الإزعاج (Spam) المتكرر</td><td>تكرار الرسائل، الإزعاج الصوتي بالمايكروفون، أو المنشن (Tag) العشوائي بدون هدف.</td><td>تنبيه</td><td>كتم (Mute / Timeout) مؤقت</td></tr>
+                                <tr><td>التقصير والتأخر الإداري</td><td>تأخر إداري أو مشرف عن أداء المهام الموكلة إليه أو الغياب عن الاجتماعات المقررة بدون عذر.</td><td>تنبيه إداري</td><td>إنذار ولفت نظر</td></tr>
                                 
-                                <tr style="background: rgba(255,255,255,0.03)"><td colspan="4" style="text-align: center; color: var(--danger);"><strong>المخالفات الجسيمة (تحرك مباشر)</strong></td></tr>
-                                <tr><td>التنمر والعنصرية</td><td>الإساءة المباشرة لعضو محدد</td><td><span class="badge-danger">تعليق العضوية والإبعاد مؤقتاً</span></td><td>فصل نهائي</td></tr>
-                                <tr><td>تسريب المعلومات</td><td>نشر أسرار الإدارة خارج النادي</td><td><span class="badge-danger">فصل (طرد) وإنهاء العضوية فوراً</span></td><td>-</td></tr>
-                                <tr><td>التزوير والتحايل</td><td>الكذب للحصول على منصب/ترقية</td><td><span class="badge-danger">إنهاء التكليف وإبعاد</span></td><td>-</td></tr>
+                                <tr style="background: rgba(255,255,255,0.05)"><td colspan="4" style="text-align: center; color: var(--warning); font-weight: 900; letter-spacing: 1px;">المخالفات الإدارية المتوسطة</td></tr>
+                                <tr><td>إساءة لفظية مباشرة</td><td>التقليل، السخرية، أو شتم عضو في الفريق بشكل مباشر.</td><td>إنذار أخير مكتوب</td><td>تعليق عضوية لمدة محددة</td></tr>
+                                <tr><td>إثارة النزاعات</td><td>خلق مشاكل بين الأعضاء، التحريض، ترويج الشائعات المربكة لعمل النادي.</td><td>إنذار شديد اللهجة</td><td>تعليق وصلاحيات مقيدة</td></tr>
+                                <tr><td>عدم الامتثال للتوجيهات</td><td>رفض عمدي للأوامر الإدارية التنظيمية، أو الجدال المستمر لعرقلة العمل.</td><td>إنذار</td><td>تعليق وتهميش تنظيمي</td></tr>
+                                
+                                <tr style="background: rgba(255,255,255,0.05)"><td colspan="4" style="text-align: center; color: var(--danger); font-weight: 900; letter-spacing: 1px;">المخالفات الجسيمة (تستوجب الإبعاد الفوري أو التجميد)</td></tr>
+                                <tr><td>التنمر أو الإهانة المتعمدة</td><td>إساءة نفسية، عنصرية، طائفية، أو لفظية متعمدة ومستمرة بغرض الإيذاء.</td><td><span class="badge-danger">تجميد وتعليق فوري لدراسة الإبعاد</span></td><td>الفصل النهائي (طرد)</td></tr>
+                                <tr><td>تسريب أسرار الإدارة</td><td>نشر محتوى خاص بإدارة النادي، خططه، أو محادثاته لمنصات خارجية أو لأشخاص غير معنيين.</td><td><span class="badge-danger">إبعاد نهائي مباشر (طرد)</span></td><td>-</td></tr>
+                                <tr><td>التزوير، التحايل، أو الكذب</td><td>تقديم معلومات مضللة تماماً للحصول على منصب، أو انتحال شخصيات.</td><td><span class="badge-danger">إعفاء من كافة المناصب وطرد</span></td><td>-</td></tr>
+                                <tr><td>التحرش أو التهديد</td><td>أي تصرف يمس سلامة الأعضاء عبر تهديد مادي، لفظي، أو مساومة.</td><td><span class="badge-danger">فصل (طرد) وإبلاغ الجهات إن لزم</span></td><td>-</td></tr>
                             </tbody>
                         </table>
                     </div>
+                    <p style="margin-top: 20px; font-size: 0.9rem; color: var(--text-muted); line-height: 1.6;">* ملاحظة: يحق للإدارة العليا تجاوز مبدأ التدرج في العقوبات وإيقاع العقوبة القصوى فوراً في حال كانت المخالفة الجسيمة مثبتة بأدلة قطعية وتمس أمن النادي أو كرامة أعضائه مباشرة. تكرار المخالفات البسيطة بصورة استفزازية يرفعها تصنيفاً لمتوسطة أو جسيمة.</p>
                 </div>
             </div>
 
@@ -362,84 +393,84 @@
             <div id="page-tasks" class="page-section">
                 <div class="section-title">
                     <h2>المهام النشطة (Kanban)</h2>
-                    <a href="https://forms.gle/TFtTXLcpc46D65Cx7" target="_blank" class="btn-primary manager-only"><i class="fa-solid fa-plus"></i> تكليف جديد</a>
+                    <a href="https://forms.gle/TFtTXLcpc46D65Cx7" target="_blank" class="btn-primary manager-only"><i class="fa-solid fa-plus"></i> تكليف ومهام جديدة</a>
                 </div>
                 <div class="tasks-container" id="cardsContainer">
-                    <div style="width:100%; grid-column: 1/-1; text-align:center; padding: 40px; background: var(--bg-card); border-radius: 16px;">
-                        <i class="fa-solid fa-circle-notch fa-spin" style="font-size: 2rem; color: var(--green-light);"></i>
-                        <h3 style="color:white; margin-top:10px;">جاري جلب المهام...</h3>
+                    <div style="width:100%; grid-column: 1/-1; text-align:center; padding: 60px; background: var(--bg-card); border-radius: 20px;">
+                        <i class="fa-solid fa-circle-notch fa-spin" style="font-size: 2.5rem; color: var(--green-light);"></i>
+                        <h3 style="color:white; margin-top:20px; font-weight: 800;">جاري مزامنة وجلب المهام...</h3>
                     </div>
                 </div>
             </div>
 
             <!-- الصفحة 4: الموارد والروابط -->
             <div id="page-shared" class="page-section">
-                <div class="section-title"><h2>الموارد والمنصات الرئيسية</h2></div>
+                <div class="section-title"><h2>الموارد، المنصات، والروابط المركزية</h2></div>
                 <div class="grid-cards">
                     <a href="https://discord.gg/TbUBfFQsEy" target="_blank" class="action-card">
                         <div class="icon-box" style="color:#5865F2; background:rgba(88,101,242,0.1);"><i class="fa-brands fa-discord"></i></div>
-                        <div class="card-info"><h3>المقر الرسمي للعضاء (Discord)</h3><p>الفعاليات والتواصل اليومي</p></div>
+                        <div class="card-info"><h3>المقر الرسمي للأعضاء (Discord)</h3><p>المنصة المعتمدة للاجتماعات، الفعاليات والتواصل اليومي</p></div>
                     </a>
                     <a href="https://deecc.my.canva.site/eateam-link" target="_blank" class="action-card">
                         <div class="icon-box" style="color:#00C4CC; background:rgba(0,196,204,0.1);"><i class="fa-solid fa-link"></i></div>
-                        <div class="card-info"><h3>مُجمّع روابط آفاق</h3><p>حسابات وسائل التواصل</p></div>
+                        <div class="card-info"><h3>مُجمّع روابط وبوابة آفاق</h3><p>منصات السوشال ميديا، حسابات الإدارة والمشاركات</p></div>
                     </a>
                 </div>
 
-                <!-- النماذج التي تظهر للإداري فقط (أو المدير في وضع المعاينة) -->
-                <h3 class="section-subtitle admin-only" style="display:none; color:var(--green-light); margin-top:30px;">النماذج المخصصة للإداريين</h3>
+                <!-- النماذج التي تظهر في واجهة الإداري فقط -->
+                <h3 class="section-subtitle admin-only" style="display:none; color:var(--green-light); margin-top:40px;">نظام النماذج الداخلي للإداريين والمشرفين</h3>
                 <div class="grid-cards admin-only" style="display:none;">
                     <a href="https://docs.google.com/forms/d/e/1FAIpQLSdPVe18ZGd4S2iyAciFjD7-I9GzHvxo9fslLQMjOez4HevNzQ/viewform?usp=publish-editor" target="_blank" class="action-card">
                         <div class="icon-box"><i class="fa-solid fa-ranking-star"></i></div>
-                        <div class="card-info"><h3>تقديم طلب ترقية</h3></div>
+                        <div class="card-info"><h3>تقديم ملف طلب ترقية</h3></div>
                     </a>
                     <a href="https://forms.gle/8eMxL5iM82NoHeFNA" target="_blank" class="action-card">
                         <div class="icon-box"><i class="fa-solid fa-envelope-open-text"></i></div>
-                        <div class="card-info"><h3>رفع الشكاوى والمقترحات</h3></div>
+                        <div class="card-info"><h3>رفع الشكاوى، البلاغات، والمقترحات</h3></div>
                     </a>
                 </div>
             </div>
 
             <!-- الصفحة 5: الملاحظات الخاصة -->
             <div id="page-notes" class="page-section">
-                <div class="section-title"><h2>مفكرتي الخاصة الحفظ التلقائي يعمل</h2></div>
-                <p style="color:var(--text-muted); margin-bottom: 20px; font-size: 0.95rem;">
-                    <i class="fa-solid fa-lock" style="color:var(--green-light);"></i> تُحفظ ملاحظاتك حصرياً وبشكل سرّي في جهازك عبر متصفحك الحالي، ولا يمكن لأحد الاطلاع عليها.
+                <div class="section-title"><h2>مفكرتي ومسوداتي الخاصة</h2></div>
+                <p style="color:var(--text-muted); margin-bottom: 25px; font-size: 1rem; line-height: 1.6;">
+                    <i class="fa-solid fa-shield-blank" style="color:var(--green-light); font-size: 1.2rem; margin-left: 5px;"></i> منطقة أمنة ومُشفرة محلياً. تُحفظ هذه الملاحظات في جهازك ومتصفحك الحالي حصراً وتقنياً لا يستطيع الخادم ولاتستطيع الإدارة الاطلاع عليها. استخدمها لترتيب أفكارك.
                 </p>
-                <textarea id="localNotes" class="textarea-notes" placeholder="اكتب مسوداتك، أفكارك، أو مهامك السريعة هنا..."></textarea>
-                <div id="saveNoteMsg" style="color:var(--green-light); font-size:0.9rem; margin-top:15px; display:none; font-weight: 700;">
-                    <i class="fa-solid fa-check-circle"></i> تم الحفظ التلقائي بنجاح
+                <textarea id="localNotes" class="textarea-notes" placeholder="اكتب مسوداتك، أفكارك الاستراتيجية، أو مهامك السريعة هنا..."></textarea>
+                <div id="saveNoteMsg" style="color:var(--green-light); font-size:0.95rem; margin-top:15px; display:none; font-weight: 800;">
+                    <i class="fa-solid fa-cloud-arrow-up"></i> تمت عملية المزامنة والحفظ التلقائي في جهازك محلياً
                 </div>
             </div>
 
             <!-- الصفحة 6: إدارة المدير حصرياً -->
             <div id="page-manager" class="page-section manager-only">
-                <h3 class="section-subtitle">ملفات الإدارة والأعضاء</h3>
+                <h3 class="section-subtitle">إدارة شؤون الأعضاء المركزية</h3>
                 <div class="grid-cards">
-                    <a href="https://forms.gle/hKGyt5k2DE61QzdK7" target="_blank" class="action-card"><div class="icon-box"><i class="fa-solid fa-user-check"></i></div><div class="card-info"><h3>اعتماد قبول عضو</h3></div></a>
-                    <a href="https://docs.google.com/spreadsheets/d/1f0cyMMonWVDHzYMTHUbcLgtXJM50l5YB8npYA8geHLo/edit?usp=sharing" target="_blank" class="action-card"><div class="icon-box"><i class="fa-solid fa-users-viewfinder"></i></div><div class="card-info"><h3>السجل المركزي للأعضاء</h3></div></a>
-                    <a href="https://docs.google.com/spreadsheets/d/1qlbmw_wR61pqtMxb4IKT3HT9rYteGgNhWWPnUBRynpA/edit?usp=sharing" target="_blank" class="action-card"><div class="icon-box"><i class="fa-solid fa-address-card"></i></div><div class="card-info"><h3>قاعدة المتقدمين للالتحاق</h3></div></a>
-                    <a href="https://forms.gle/Bf1UGeL3igWXUseS6" target="_blank" class="action-card danger"><div class="icon-box"><i class="fa-solid fa-user-xmark"></i></div><div class="card-info"><h3 style="color:var(--danger)">تنفيذ طرد/استبعاد عضو</h3></div></a>
+                    <a href="https://forms.gle/hKGyt5k2DE61QzdK7" target="_blank" class="action-card"><div class="icon-box"><i class="fa-solid fa-user-check"></i></div><div class="card-info"><h3>اعتماد قبول عضو جديد</h3></div></a>
+                    <a href="https://docs.google.com/spreadsheets/d/1f0cyMMonWVDHzYMTHUbcLgtXJM50l5YB8npYA8geHLo/edit?usp=sharing" target="_blank" class="action-card"><div class="icon-box"><i class="fa-solid fa-users-viewfinder"></i></div><div class="card-info"><h3>السجل المركزي وقاعدة بيانات الأعضاء</h3></div></a>
+                    <a href="https://docs.google.com/spreadsheets/d/1qlbmw_wR61pqtMxb4IKT3HT9rYteGgNhWWPnUBRynpA/edit?usp=sharing" target="_blank" class="action-card"><div class="icon-box"><i class="fa-solid fa-address-card"></i></div><div class="card-info"><h3>سجل المتقدمين للالتحاق بالنادي</h3></div></a>
+                    <a href="https://forms.gle/Bf1UGeL3igWXUseS6" target="_blank" class="action-card danger"><div class="icon-box"><i class="fa-solid fa-user-xmark"></i></div><div class="card-info"><h3 style="color:var(--danger)">تنفيذ إجراء الفصل/الطرد لعضو</h3></div></a>
                 </div>
 
-                <h3 class="section-subtitle">التقارير الإدارية والسحابة</h3>
+                <h3 class="section-subtitle">التقارير وسحابة الإدارة العليا (Drive)</h3>
                 <div class="grid-cards">
                     <a href="https://drive.google.com/drive/folders/1A3uxWu5okmDGMkejzSZlW6D9BU090_1E?usp=sharing" target="_blank" class="action-card">
                         <div class="icon-box"><i class="fa-brands fa-google-drive"></i></div>
-                        <div class="card-info"><h3>السحابة الإدارية (Drive)</h3></div>
+                        <div class="card-info"><h3>مساحة درايف (Drive) المركزية</h3><p>أرشيف الإدارة العليا المغلق</p></div>
                     </a>
-                    <a href="https://forms.gle/zHAPz3MA2i3xoDe5A" target="_blank" class="action-card"><div class="icon-box"><i class="fa-solid fa-chart-line"></i></div><div class="card-info"><h3>تعبئة التقرير الشهري</h3></div></a>
-                    <a href="https://docs.google.com/forms/d/e/1FAIpQLSdPVe18ZGd4S2iyAciFjD7-I9GzHvxo9fslLQMjOez4HevNzQ/viewform?usp=dialog" target="_blank" class="action-card"><div class="icon-box"><i class="fa-solid fa-handshake-angle"></i></div><div class="card-info"><h3>طلب تعيين مساعد</h3></div></a>
+                    <a href="https://forms.gle/zHAPz3MA2i3xoDe5A" target="_blank" class="action-card"><div class="icon-box"><i class="fa-solid fa-chart-line"></i></div><div class="card-info"><h3>صياغة التقرير الإداري الشهري</h3></div></a>
+                    <a href="https://docs.google.com/forms/d/e/1FAIpQLSdPVe18ZGd4S2iyAciFjD7-I9GzHvxo9fslLQMjOez4HevNzQ/viewform?usp=dialog" target="_blank" class="action-card"><div class="icon-box"><i class="fa-solid fa-handshake-angle"></i></div><div class="card-info"><h3>طلب استدعاء مساعد إداري</h3></div></a>
                 </div>
 
-                <div class="section-title" style="margin-top: 30px;"><h2>تقويم الإدارة العليا السري</h2></div>
-                <div class="embed-container" style="margin-bottom: 30px; height: 400px;">
+                <div class="section-title" style="margin-top: 40px;"><h2>التقويم الإداري السري للعمليات</h2></div>
+                <div class="embed-container" style="margin-bottom: 40px; height: 450px;">
                     <iframe src="https://calendar.google.com/calendar/embed?src=f7bca87b3c9cc65dd29f159038b5beb295d9756bcd539a95545b49c5f4f9f755@group.calendar.google.com&ctz=Asia/Riyadh&bgcolor=%2318181b&color=%2300aa61"></iframe>
                 </div>
 
-                <h3 class="section-subtitle" style="color:var(--danger)">الإجراءات التأديبية والمخالفات</h3>
+                <h3 class="section-subtitle" style="color:var(--danger)">تنفيذ الإجراءات التأديبية وإيقاع المخالفات</h3>
                 <div class="grid-cards">
-                    <a href="https://docs.google.com/forms/d/19mKar458Uz2PcJWfd55wzMgiycOsuJaYRuRrEYyDsrQ/viewform" target="_blank" class="action-card danger"><div class="icon-box"><i class="fa-solid fa-gavel"></i></div><div class="card-info"><h3 style="color:var(--danger)">إصدار وتسجيل مخالفة</h3></div></a>
+                    <a href="https://docs.google.com/forms/d/19mKar458Uz2PcJWfd55wzMgiycOsuJaYRuRrEYyDsrQ/viewform" target="_blank" class="action-card danger"><div class="icon-box"><i class="fa-solid fa-gavel"></i></div><div class="card-info"><h3 style="color:var(--danger)">إصدار وتسجيل غرامة/مخالفة تأديبية</h3></div></a>
                 </div>
             </div>
 
@@ -447,8 +478,8 @@
     </div>
 
     <script>
-        // الرابط الذي طلبته
-        const STATS_API_URL = "https://script.google.com/macros/s/AKfycbz7sysJKkneOEgO3TtP5z5zT0uzhU-1o3K38hbdpT-S65btK09fdR_7lidTp9mRmO4emg/exec";
+        // الرابط الجديد للأدوات والإحصائيات
+        const STATS_API_URL = "https://script.google.com/macros/s/AKfycbz3NsikONZHUMbHfJr8jVLFE0vbFD3-1hnK1w1iyGYPFAw7tPCE5j4Od_pNY3UIn05AyQ/exec";
         const TASKS_API_URL = "https://script.google.com/macros/s/AKfycbwwQmElZ1eaHbkL7xyV4_JZ5zR7KdDSgajIZQPkdrqrwnkMzZfcGAB3BROKJpdjrMjB/exec";
 
         let actualRole = ''; 
@@ -466,11 +497,8 @@
         }
 
         function closeSidebarMobile() { 
-            if(window.innerWidth <= 992) {
-                // بدلاً من toggle استخدمنا remove لتفادي أي تشويش عند الإغلاق!
-                document.getElementById('sidebar').classList.remove('active');
-                document.getElementById('sidebarOverlay').classList.remove('active');
-            }
+            document.getElementById('sidebar').classList.remove('active');
+            document.getElementById('sidebarOverlay').classList.remove('active');
         }
 
         function switchLoginTab(role) {
@@ -501,20 +529,20 @@
             currentRole = role;
             localStorage.setItem('afaq_saved_role', role);
             
-            // تنظيف الشاشة والتأكد من عدم وجود أي تشويش
             document.getElementById('loginScreen').style.opacity = '0';
+            document.getElementById('loginScreen').style.visibility = 'hidden';
+            
             setTimeout(() => {
                 document.getElementById('loginScreen').style.display = 'none';
                 document.getElementById('dashboardWrapper').style.display = 'flex';
-                // إغلاق التراكبات إجبارياً
-                document.getElementById('sidebarOverlay').classList.remove('active');
+                closeSidebarMobile();
                 
                 applyRoleUI(role);
                 loadNotes();
                 showPage('page-home', document.querySelectorAll('.nav-item')[0]);
                 fetchStatistics();
                 loadTasksAPI();
-            }, 300); // 300ms تأثير سلس جداً
+            }, 400); 
         }
 
         function applyRoleUI(roleToDisplay) {
@@ -523,36 +551,48 @@
             const adminItems = document.querySelectorAll('.admin-only');
             const previewBtn = document.getElementById('previewBtn');
 
+            /* هذا هو السطر الذي أصلحنا به مشكلة التخريب في الجافاسكربت */
             if (roleToDisplay === 'admin') {
                 managerItems.forEach(el => el.style.display = 'none');
+                
                 adminItems.forEach(el => {
-                    if(el.classList.contains('grid-cards')) el.style.display = 'grid';
-                    else if(el.tagName === 'H3') el.style.display = 'block';
-                    else el.style.display = 'flex';
+                    // جعلنا إظهار العناصر يتم بطريقة سليمة حتى لا يتعجن التصميم
+                    if (el.tagName === 'A') el.style.display = 'flex';
+                    else if (el.classList.contains('grid-cards')) el.style.display = 'grid';
+                    else el.style.display = 'block';
                 });
-                badge.innerHTML = '<i class="fa-solid fa-user-shield"></i> <span>التشغيل كإداري</span>';
-                document.getElementById('welcomeText').innerText = "مساحة الإداريين";
-                document.getElementById('welcomeSubtext').innerText = "العمليات التنفيذية والمتابعة";
+
+                badge.innerHTML = '<i class="fa-solid fa-user-shield"></i> <span>نظام الإداري</span>';
+                document.getElementById('welcomeText').innerText = "مساحة الإداريين المركزية";
+                document.getElementById('welcomeSubtext').innerText = "العمليات التنفيذية والمتابعة اليومية للقطاعات الخاصة";
             } else {
-                managerItems.forEach(el => el.style.display = 'flex'); 
+                
+                managerItems.forEach(el => {
+                    if (el.tagName === 'A') el.style.display = 'flex';
+                    else if (el.classList.contains('grid-cards')) el.style.display = 'grid';
+                    else el.style.display = 'block';
+                });
+                
                 adminItems.forEach(el => el.style.display = 'none');
+
                 badge.innerHTML = '<i class="fa-solid fa-crown"></i> <span>القيادة العليا</span>';
-                document.getElementById('welcomeText').innerText = "مركز القيادة";
-                document.getElementById('welcomeSubtext').innerText = "الإدارة المركزية لعمليات فريق الرياضات الإلكترونية";
+                document.getElementById('welcomeText').innerText = "مركز القيادة والتحكم";
+                document.getElementById('welcomeSubtext').innerText = "الإدارة العليا والمراقبة الاستراتيجية لعمليات فريق الرياضات الإلكترونية";
             }
 
-            // الزر يظهر فقط وحصرياً لمن سجل دخول كمدير بالمقام الأول
             if (actualRole === 'manager') {
                 previewBtn.style.display = 'flex'; 
                 if (isPreviewing) {
-                    previewBtn.innerHTML = '<i class="fa-solid fa-eye-slash"></i> <span>إنهاء المعاينة</span>';
+                    previewBtn.innerHTML = '<i class="fa-solid fa-eye-slash"></i> <span>إنهاء حالة الإداري واستعادة المدير</span>';
                     previewBtn.style.color = 'var(--danger)';
+                    previewBtn.style.background = 'rgba(239, 68, 68, 0.1)';
                 } else {
-                    previewBtn.innerHTML = '<i class="fa-solid fa-eye"></i> <span>معاينة واجهة الإداري</span>';
+                    previewBtn.innerHTML = '<i class="fa-solid fa-eye"></i> <span>معاينة واجهة الإداري بشكل حقيقي</span>';
                     previewBtn.style.color = 'var(--text-muted)';
+                    previewBtn.style.background = 'transparent';
                 }
             } else {
-                previewBtn.style.display = 'none'; // الإداري مستحيل يرى الزر
+                previewBtn.style.display = 'none'; 
             }
         }
 
@@ -573,10 +613,10 @@
             
             let loginScreen = document.getElementById('loginScreen');
             loginScreen.style.display = 'flex';
+            loginScreen.style.visibility = 'visible';
             setTimeout(() => { loginScreen.style.opacity = '1'; }, 50);
             
-            document.getElementById('sidebar').classList.remove('active');
-            document.getElementById('sidebarOverlay').classList.remove('active');
+            closeSidebarMobile();
         }
 
         function showPage(pageId, btnElement) {
@@ -584,10 +624,9 @@
             document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
             document.getElementById(pageId).classList.add('active');
             if(btnElement) btnElement.classList.add('active');
-            closeSidebarMobile(); // إغلاق الجانبية في الهاتف تماماً
+            closeSidebarMobile(); 
         }
 
-        // الملاحظات
         const notesArea = document.getElementById('localNotes');
         const saveMsg = document.getElementById('saveNoteMsg');
         let noteTimeout;
@@ -597,7 +636,7 @@
             noteTimeout = setTimeout(() => {
                 localStorage.setItem(`afaq_notes_${actualRole}`, notesArea.value);
                 saveMsg.style.display = 'block';
-                setTimeout(() => saveMsg.style.display = 'none', 2500);
+                setTimeout(() => saveMsg.style.display = 'none', 3000);
             }, 800);
         });
 
@@ -609,13 +648,14 @@
             fetch(STATS_API_URL).then(res => res.json()).then(data => {
                 document.getElementById('countMembers').innerText = data.members || 0;
                 document.getElementById('countAdmins').innerText = data.admins || 0;
-                document.getElementById('g-eafc').innerText = data.games["EA FC"] || 0;
-                document.getElementById('g-mc').innerText = data.games["Minecraft"] || 0;
-                document.getElementById('g-cod').innerText = data.games["Call of Duty"] || 0;
-                document.getElementById('g-ark').innerText = data.games["ARK"] || 0;
-                document.getElementById('g-fn').innerText = data.games["FORTNITE"] || 0;
-                document.getElementById('g-rl').innerText = data.games["Rocket League"] || 0;
-                document.getElementById('g-val').innerText = data.games["VALORANT"] || 0;
+                
+                document.getElementById('g-eafc').innerText = (data.games && data.games["EA FC"]) ? data.games["EA FC"] : 0;
+                document.getElementById('g-mc').innerText = (data.games && data.games["Minecraft"]) ? data.games["Minecraft"] : 0;
+                document.getElementById('g-cod').innerText = (data.games && data.games["Call of Duty"]) ? data.games["Call of Duty"] : 0;
+                document.getElementById('g-ark').innerText = (data.games && data.games["ARK"]) ? data.games["ARK"] : 0;
+                document.getElementById('g-fn').innerText = (data.games && data.games["FORTNITE"]) ? data.games["FORTNITE"] : 0;
+                document.getElementById('g-rl').innerText = (data.games && data.games["Rocket League"]) ? data.games["Rocket League"] : 0;
+                document.getElementById('g-val').innerText = (data.games && data.games["VALORANT"]) ? data.games["VALORANT"] : 0;
             }).catch(e => console.log(e));
         }
 
@@ -624,14 +664,14 @@
             fetch(TASKS_API_URL).then(res => res.json()).then(data => {
                 container.innerHTML = "";
                 if(!data || data.length === 0) {
-                    container.innerHTML = `<div style="width:100%; grid-column: 1/-1; text-align:center; padding: 40px; background: var(--bg-card); border-radius: 16px;"><i class="fa-solid fa-clipboard-check" style="font-size: 2.5rem; color: var(--green-light); margin-bottom: 15px;"></i><h3 style="color:white;">لا يوجد مهام نشطة أو تم إنجاز الجميع</h3></div>`;
+                    container.innerHTML = `<div style="width:100%; grid-column: 1/-1; text-align:center; padding: 60px; background: var(--bg-card); border-radius: 20px;"><i class="fa-solid fa-clipboard-check" style="font-size: 3rem; color: var(--green-light); margin-bottom: 20px;"></i><h3 style="color:white; font-weight:800;">بصيرة ممتازة! لا توجد مهام معلقة أو تم إنجاز الجدول</h3></div>`;
                     return;
                 }
                 const isManager = (actualRole === "manager");
                 data.forEach(taskObj => {
                     let taskNameKey = Object.keys(taskObj).find(k => k.toLowerCase().includes('task') || k.includes('المهمة'));
                     let prioKey = Object.keys(taskObj).find(k => k.toLowerCase().includes('priority') || k.includes('الأولوية'));
-                    let taskTitle = taskNameKey ? taskObj[taskNameKey] : "بدون عنوان";
+                    let taskTitle = taskNameKey ? taskObj[taskNameKey] : "غير مصنف";
                     let priority = prioKey ? taskObj[prioKey] : "عادية";
                     let pClass = "low";
                     if(String(priority).toLowerCase().includes("high") || String(priority).includes("عالية")) pClass = "high";
@@ -655,7 +695,7 @@
                     if(isManager) {
                         let btn = document.createElement('button');
                         btn.className = "btn-delete";
-                        btn.innerHTML = '<i class="fa-solid fa-check-double"></i> إتمام وأرشفة المهمة';
+                        btn.innerHTML = '<i class="fa-solid fa-check-double"></i> إغلاق وأرشفة التكليف';
                         btn.onclick = () => {
                             btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري الحفظ...';
                             fetch(`${TASKS_API_URL}?action=delete&taskName=${encodeURIComponent(taskTitle)}`)
@@ -664,7 +704,7 @@
                                 if(res.success) {
                                     card.style.transform = "scale(0.8)"; card.style.opacity = "0";
                                     setTimeout(() => card.remove(), 300);
-                                } else { btn.innerHTML = '<i class="fa-solid fa-xmark"></i> فشل الحذف'; }
+                                } else { btn.innerHTML = '<i class="fa-solid fa-xmark"></i> فشل إغلاق التكليف'; }
                             });
                         };
                         card.appendChild(btn);
@@ -672,7 +712,7 @@
                     container.appendChild(card);
                 });
             }).catch(e => {
-                container.innerHTML = `<div style="width:100%; grid-column: 1/-1; text-align:center; padding:20px; color:var(--danger);">خطأ في جلب بيانات المهام.</div>`;
+                container.innerHTML = `<div style="width:100%; grid-column: 1/-1; text-align:center; padding:20px; color:var(--danger); font-weight:800;">تم فقدان الاتصال بقاعدة المهام، يرجى المحاولة لاحقا.</div>`;
             });
         }
     </script>
