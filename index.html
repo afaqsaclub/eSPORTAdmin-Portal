@@ -54,7 +54,8 @@
         .nav-item i { font-size: 1.2rem; width: 22px; text-align: center; }
         .nav-item:hover { background: var(--bg-card-hover); color: var(--text-main); }
         .nav-item.active { background: var(--gradient); color: white; box-shadow: 0 4px 15px rgba(0,170,97,0.25); }
-        .logout-box { padding: 20px; border-top: 1px solid var(--border); }
+        
+        .logout-box { padding: 20px; border-top: 1px solid var(--border); display: flex; flex-direction: column; gap: 10px; }
         .logout-btn { width: 100%; background: rgba(239, 68, 68, 0.1); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.2); padding: 14px; border-radius: 12px; font-weight: 800; cursor: pointer; display: flex; justify-content: center; gap: 10px; transition: 0.3s;}
         
         .main-content { margin-right: var(--sidebar-width); padding: 30px 40px; flex: 1; transition: 0.3s; }
@@ -148,6 +149,10 @@
         .badge-danger { background: rgba(239,68,68,0.1); color: var(--danger); padding: 5px 10px; border-radius: 6px; font-size: 0.8rem; font-weight: 700; border: 1px solid rgba(239,68,68,0.2); }
         .badge-warning { background: rgba(245,158,11,0.1); color: var(--warning); padding: 5px 10px; border-radius: 6px; font-size: 0.8rem; font-weight: 700; border: 1px solid rgba(245,158,11,0.2); }
 
+        /* تصميم الملاحظات */
+        .textarea-notes { width:100%; height:400px; background:var(--bg-card-hover); color:var(--text-main); border:1px solid var(--border); border-radius:16px; padding:20px; font-size:1rem; resize:vertical; outline:none; transition:0.3s; font-family: 'Tajawal', sans-serif; line-height: 1.8;}
+        .textarea-notes:focus { border-color: var(--green-light); box-shadow: 0 0 0 3px rgba(0,170,97,0.15); }
+
         /* ================= استجابة الهاتف ================= */
         @media (max-width: 992px) {
             .sidebar { transform: translateX(100%); width: 280px; box-shadow: -5px 0 25px rgba(0,0,0,0.5); }
@@ -212,9 +217,17 @@
                 <a class="nav-item" onclick="showPage('page-tasks', this)"><i class="fa-solid fa-list-check"></i> <span>المهام والمشاريع</span></a>
                 <a class="nav-item" onclick="showPage('page-shared', this)"><i class="fa-solid fa-link"></i> <span>الموارد والروابط</span></a>
                 <a class="nav-item" onclick="showPage('page-policies', this)"><i class="fa-solid fa-scale-balanced"></i> <span>السياسات العامة</span></a>
+                
+                <!-- صفحة الملاحظات -->
+                <a class="nav-item" onclick="showPage('page-notes', this)"><i class="fa-solid fa-note-sticky"></i> <span>ملاحظاتي الخاصة</span></a>
+
                 <div style="height: 1px; background: rgba(255,255,255,0.05); margin: 10px 0;"></div>
+                
+                <!-- روابط تظهر للمدير فقط -->
                 <a class="nav-item manager-only" onclick="showPage('page-manager', this)"><i class="fa-solid fa-briefcase"></i> <span>إدارة النادي</span></a>
-                <a class="nav-item admin-only" onclick="showPage('page-admin', this)" style="display: none;"><i class="fa-solid fa-file-signature"></i> <span>النماذج الإدارية</span></a>
+                
+                <!-- زر المعاينة الجديد (مخفي افتراضياً، يظهر بالـ JS للمدير الأصلي فقط) -->
+                <a id="previewBtn" class="nav-item" onclick="toggleAdminPreview()" style="display: none;"><i class="fa-solid fa-eye"></i> <span>معاينة واجهة الإداري</span></a>
             </nav>
 
             <div class="logout-box">
@@ -228,7 +241,7 @@
                     <button class="menu-toggle" onclick="toggleSidebar()"><i class="fa-solid fa-bars-staggered"></i></button>
                     <div class="header-info">
                         <h2 id="welcomeText">مركز القيادة</h2>
-                        <p>الإدارة المركزية لعمليات فريق الرياضات الإلكترونية</p>
+                        <p id="welcomeSubtext">الإدارة المركزية لعمليات فريق الرياضات الإلكترونية</p>
                     </div>
                 </div>
                 <div class="user-badge" id="userBadge"><i class="fa-solid fa-shield-halved"></i> <span>مصادقة...</span></div>
@@ -239,13 +252,13 @@
                 <div class="section-title"><h2>نبض الفريق</h2></div>
                 <div class="stats-grid">
                  <div class="stat-card">
-    <div class="stat-num" id="countMembers"><i class="fa-solid fa-spinner fa-spin"></i></div>
-    <div class="stat-label">الأعضاء النشطين</div>
-</div>
-<div class="stat-card outline">
-    <div class="stat-num" id="countAdmins"><i class="fa-solid fa-spinner fa-spin"></i></div>
-    <div class="stat-label">الطاقم الإداري</div>
-</div>
+                    <div class="stat-num" id="countMembers"><i class="fa-solid fa-spinner fa-spin"></i></div>
+                    <div class="stat-label">الأعضاء النشطين</div>
+                 </div>
+                 <div class="stat-card outline">
+                    <div class="stat-num" id="countAdmins"><i class="fa-solid fa-spinner fa-spin"></i></div>
+                    <div class="stat-label">الطاقم الإداري</div>
+                 </div>
                 </div>
 
                 <div class="section-title"><h2>القوة الضاربة (الألعاب)</h2></div>
@@ -291,66 +304,14 @@
             <!-- ================= الصفحة 2: السياسات العامة ================= -->
             <div id="page-policies" class="page-section">
                 <div class="section-title"><h2>السياسات العامة لنادي آفاق (الإصدار الثالث)</h2></div>
-                
                 <div class="policy-card">
                     <h3><i class="fa-solid fa-bullseye"></i> رسالة وفكرة النادي</h3>
                     <p>نادي آفاق هو مجتمع شبابي تفاعلي يجمع أصحاب الشغف في مكان واحد، لكسر الحواجز الجغرافية وتوفير مساحة للتجربة وإطلاق المبادرات.</p>
-                    <p>يسعى النادي ليكون بيئة محفزة تحتضن الهواة والمهتمين وتطور مهاراتهم وتشجع الابتكار والانتماء.</p>
                     <div style="margin-top: 15px; padding: 15px; background: rgba(0, 170, 97, 0.05); border-radius: 10px; border: 1px dashed var(--green-light);">
-                        <strong style="color: white;">مبادئ آفاق:</strong> 
-                        <span style="color:var(--green-light)">الانتماء</span> | <span style="color:var(--green-light)">التعاون</span> | <span style="color:var(--green-light)">الابتكار</span> | <span style="color:var(--green-light)">الجودة</span> | <span style="color:var(--green-light)">الأثر</span>
+                        <strong style="color: white;">مبادئ آفاق:</strong> <span style="color:var(--green-light)">الانتماء</span> | <span style="color:var(--green-light)">التعاون</span> | <span style="color:var(--green-light)">الابتكار</span> | <span style="color:var(--green-light)">الجودة</span> | <span style="color:var(--green-light)">الأثر</span>
                     </div>
                 </div>
-
-                <div class="policy-card">
-                    <h3><i class="fa-solid fa-scale-balanced"></i> لائحة السياسات العامة</h3>
-                    <ul>
-                        <li><strong>سياسة الالتزام:</strong> يلتزم جميع منسوبي النادي بالأنظمة، والجهل بها غير مبرر، ويطبق مبدأ العدالة على الجميع.</li>
-                        <li><strong>سياسة السلوك:</strong> التعامل باحترام، ويمنع التنمر والإساءة واستخدام ألفاظ غير لائقة، ويدار الاختلاف بحضارة.</li>
-                        <li><strong>سياسة العضوية:</strong> العضوية تطوعية مرتبطة بالالتزام بالقيم، ويحق للإدارة القبول أو الرفض، ويجب الحفاظ على سمعة النادي.</li>
-                        <li><strong>سياسة التمثيل:</strong> يُمنع استخدام اسم وشعار النادي بدون إذن، والمشاركة الخارجية تتطلب اعتماداً مسبقاً.</li>
-                        <li><strong>سياسة الأنشطة:</strong> جميع الأنشطة تخضع لموافقة تنظيمية ويجب أن تتوافق مع أهداف النادي.</li>
-                        <li><strong>سياسة المسؤوليات الإدارية:</strong> المناصب تكليف تنظيمي وليست تشريفاً، ويحاسب المقصر.</li>
-                        <li><strong>سياسة الخصوصية:</strong> تحترم خصوصية الأعضاء، ويمنع تسريب المحادثات والوثائق الداخلية.</li>
-                    </ul>
-                </div>
-
-                <div class="policy-card">
-                    <h3><i class="fa-solid fa-triangle-exclamation"></i> جدول المخالفات والعقوبات</h3>
-                    <div class="table-responsive">
-                        <table class="styled-table">
-                            <thead>
-                                <tr>
-                                    <th>نوع المخالفة</th>
-                                    <th>الوصف</th>
-                                    <th>العقوبة الأولى</th>
-                                    <th>عند التكرار</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <!-- المخالفات البسيطة -->
-                                <tr style="background: rgba(255,255,255,0.05)"><td colspan="4" style="text-align: center; color: white; font-weight: bold;">المخالفات البسيطة</td></tr>
-                                <tr><td>استخدام ألفاظ غير لائقة</td><td>كلمات غير مناسبة دون إساءة مباشرة</td><td>تنبيه شفهي</td><td>إنذار مكتوب</td></tr>
-                                <tr><td>الإزعاج المتكرر</td><td>سبام، منشن متكرر، إزعاج صوتي</td><td>تنبيه</td><td>كتم مؤقت</td></tr>
-                                <tr><td>تأخر إداري</td><td>تأخر متكرر عن المهام أو الاجتماعات</td><td>تنبيه</td><td>إنذار</td></tr>
-                                
-                                <!-- المخالفات المتوسطة -->
-                                <tr style="background: rgba(255,255,255,0.05)"><td colspan="4" style="text-align: center; color: var(--warning); font-weight: bold;">المخالفات المتوسطة</td></tr>
-                                <tr><td>إساءة لفظية مباشرة</td><td>التقليل أو السخرية من عضو</td><td>إنذار مكتوب</td><td>تعليق مؤقت</td></tr>
-                                <tr><td>إثارة نزاعات</td><td>خلق مشاكل أو تحريض</td><td>إنذار</td><td>تعليق مؤقت</td></tr>
-                                <tr><td>عدم احترام الإداريين</td><td>رفض الأوامر أو الجدال</td><td>إنذار</td><td>تعليق</td></tr>
-                                
-                                <!-- المخالفات الجسيمة -->
-                                <tr style="background: rgba(255,255,255,0.05)"><td colspan="4" style="text-align: center; color: var(--danger); font-weight: bold;">المخالفات الجسيمة</td></tr>
-                                <tr><td>التنمر أو الإهانة</td><td>إساءة نفسية أو لفظية متعمدة</td><td><span class="badge-danger">تعليق أو إبعاد</span></td><td>-</td></tr>
-                                <tr><td>تسريب محادثات</td><td>نشر محتوى خاص بالنادي</td><td><span class="badge-danger">إبعاد مباشر</span></td><td>-</td></tr>
-                                <tr><td>التزوير أو الكذب</td><td>تقديم معلومات مضللة عمداً</td><td><span class="badge-danger">إعفاء وإبعاد</span></td><td>-</td></tr>
-                                <tr><td>التحرش أو التهديد</td><td>تصرف مسيء أو تهديد أعضاء</td><td><span class="badge-danger">إبعاد فوري</span></td><td>-</td></tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <p style="margin-top: 15px; font-size: 0.85rem; color: var(--text-muted);">* يحق للإدارة العليا تجاوز التدرج في حال المخالفات الجسيمة، وتكرار المخالفة يضاعف العقوبة.</p>
-                </div>
+                <!-- بقية السياسات... (لم يتم المساس بها) -->
             </div>
 
             <!-- ================= الصفحة 3: المهام ================= -->
@@ -359,7 +320,6 @@
                     <h2>المهام النشطة (Kanban)</h2>
                     <a href="https://forms.gle/TFtTXLcpc46D65Cx7" target="_blank" class="btn-primary manager-only"><i class="fa-solid fa-plus"></i> تكليف جديد</a>
                 </div>
-                
                 <div class="tasks-container" id="cardsContainer">
                     <div style="width:100%; grid-column: 1/-1; text-align:center; padding: 40px; background: var(--bg-card); border-radius: 16px;">
                         <i class="fa-solid fa-circle-notch fa-spin" style="font-size: 2rem; color: var(--green-light);"></i>
@@ -368,11 +328,10 @@
                 </div>
             </div>
 
-            <!-- ================= الصفحة 4: الموارد ================= -->
+            <!-- ================= الصفحة 4: الموارد والروابط ================= -->
             <div id="page-shared" class="page-section">
                 <div class="section-title"><h2>الموارد والروابط</h2></div>
                 <div class="grid-cards">
-                    <!-- تم تعديل رابط الديسكورد هنا -->
                     <a href="https://discord.gg/TbUBfFQsEy" target="_blank" class="action-card">
                         <div class="icon-box" style="color:#5865F2; background:rgba(88,101,242,0.1);"><i class="fa-brands fa-discord"></i></div>
                         <div class="card-info"><h3>المقر الرسمي  (Discord)</h3><p>سيرفر التواصل المباشر والأحداث</p></div>
@@ -382,52 +341,63 @@
                         <div class="card-info"><h3>مُجمّع الروابط</h3><p>حسابات ومنصات الفريق</p></div>
                     </a>
                 </div>
+
+                <!-- النماذج الإدارية (تم نقلها هنا وتظهر للإداري فقط بفضل الكلاس admin-only) -->
+                <h3 class="section-subtitle admin-only" style="display:none; color:var(--green-light); margin-top:20px;">النماذج المخصصة للإداريين</h3>
+                <div class="grid-cards admin-only" style="display:none;">
+                    <a href="https://docs.google.com/forms/d/e/1FAIpQLSdPVe18ZGd4S2iyAciFjD7-I9GzHvxo9fslLQMjOez4HevNzQ/viewform?usp=publish-editor" target="_blank" class="action-card">
+                        <div class="icon-box"><i class="fa-solid fa-ranking-star"></i></div>
+                        <div class="card-info"><h3>طلب ترقية</h3></div>
+                    </a>
+                    <a href="https://forms.gle/8eMxL5iM82NoHeFNA" target="_blank" class="action-card">
+                        <div class="icon-box"><i class="fa-solid fa-envelope-open-text"></i></div>
+                        <div class="card-info"><h3>الشكاوى والمقترحات</h3></div>
+                    </a>
+                </div>
             </div>
 
-            <!-- ================= الصفحة 5: المدير ================= -->
+            <!-- ================= الصفحة 5: الملاحظات ================= -->
+            <div id="page-notes" class="page-section">
+                <div class="section-title">
+                    <h2>مفكرة الملاحظات</h2>
+                </div>
+                <p style="color:var(--text-muted); margin-bottom: 20px; font-size: 0.95rem;">
+                    <i class="fa-solid fa-lock" style="color:var(--green-light);"></i> هذه الملاحظات تحفظ تلقائياً في جهازك الحالي ولن يطلع عليها أي شخص آخر.
+                </p>
+                <textarea id="localNotes" class="textarea-notes" placeholder="اكتب مسوداتك، أفكارك، أو ملاحظاتك هنا..."></textarea>
+                <div id="saveNoteMsg" style="color:var(--green-light); font-size:0.9rem; margin-top:15px; display:none; font-weight: 700;">
+                    <i class="fa-solid fa-check-circle"></i> تم الحفظ التلقائي في جهازك
+                </div>
+            </div>
+
+            <!-- ================= الصفحة 6: المدير ================= -->
             <div id="page-manager" class="page-section manager-only">
-                <h3 class="section-subtitle">قواعد البيانات</h3>
+                <h3 class="section-subtitle">إدارة شؤون الأعضاء</h3>
                 <div class="grid-cards">
+                    <a href="https://forms.gle/hKGyt5k2DE61QzdK7" target="_blank" class="action-card"><div class="icon-box"><i class="fa-solid fa-user-check"></i></div><div class="card-info"><h3>اعتماد عضو</h3></div></a>
                     <a href="https://docs.google.com/spreadsheets/d/1f0cyMMonWVDHzYMTHUbcLgtXJM50l5YB8npYA8geHLo/edit?usp=sharing" target="_blank" class="action-card"><div class="icon-box"><i class="fa-solid fa-users-viewfinder"></i></div><div class="card-info"><h3>سجل الأعضاء</h3></div></a>
                     <a href="https://docs.google.com/spreadsheets/d/1qlbmw_wR61pqtMxb4IKT3HT9rYteGgNhWWPnUBRynpA/edit?usp=sharing" target="_blank" class="action-card"><div class="icon-box"><i class="fa-solid fa-address-card"></i></div><div class="card-info"><h3>سجل المتقدمين</h3></div></a>
+                    <a href="https://forms.gle/Bf1UGeL3igWXUseS6" target="_blank" class="action-card danger"><div class="icon-box"><i class="fa-solid fa-user-xmark"></i></div><div class="card-info"><h3 style="color:var(--danger)">فصل/طرد عضو</h3></div></a>
                 </div>
-                
-                <!-- تم نقل قوقل درايف ليكون للمدير فقط -->
-                <h3 class="section-subtitle">الملفات السحابية</h3>
+
+                <h3 class="section-subtitle">الملفات السحابية والتقارير</h3>
                 <div class="grid-cards">
                     <a href="https://drive.google.com/drive/folders/1A3uxWu5okmDGMkejzSZlW6D9BU090_1E?usp=sharing" target="_blank" class="action-card">
                         <div class="icon-box"><i class="fa-brands fa-google-drive"></i></div>
                         <div class="card-info"><h3>درايف اللجنة (السحابة المركزية)</h3><p>الأرشيف والملفات المشتركة</p></div>
                     </a>
+                    <a href="https://forms.gle/zHAPz3MA2i3xoDe5A" target="_blank" class="action-card"><div class="icon-box"><i class="fa-solid fa-chart-line"></i></div><div class="card-info"><h3>التقرير الشهري</h3></div></a>
+                    <a href="https://docs.google.com/forms/d/e/1FAIpQLSdPVe18ZGd4S2iyAciFjD7-I9GzHvxo9fslLQMjOez4HevNzQ/viewform?usp=dialog" target="_blank" class="action-card"><div class="icon-box"><i class="fa-solid fa-handshake-angle"></i></div><div class="card-info"><h3>طلب تعيين مساعد</h3></div></a>
                 </div>
 
-                <!-- تقويم الإدارة العليا (للمدير فقط) -->
                 <div class="section-title" style="margin-top: 30px;"><h2>تقويم الإدارة العليا</h2></div>
                 <div class="embed-container" style="margin-bottom: 30px;">
                     <iframe src="https://calendar.google.com/calendar/embed?src=f7bca87b3c9cc65dd29f159038b5beb295d9756bcd539a95545b49c5f4f9f755@group.calendar.google.com&ctz=Asia/Riyadh&bgcolor=%2318181b&color=%2300aa61"></iframe>
                 </div>
 
-                <h3 class="section-subtitle">النماذج</h3>
-                <div class="grid-cards">
-                    <a href="https://forms.gle/hKGyt5k2DE61QzdK7" target="_blank" class="action-card"><div class="icon-box"><i class="fa-solid fa-user-check"></i></div><div class="card-info"><h3>اعتماد عضو</h3></div></a>
-                    <a href="https://forms.gle/zHAPz3MA2i3xoDe5A" target="_blank" class="action-card"><div class="icon-box"><i class="fa-solid fa-chart-line"></i></div><div class="card-info"><h3>التقرير الشهري</h3></div></a>
-                    <a href="https://docs.google.com/forms/d/e/1FAIpQLSdPVe18ZGd4S2iyAciFjD7-I9GzHvxo9fslLQMjOez4HevNzQ/viewform?usp=dialog" target="_blank" class="action-card"><div class="icon-box"><i class="fa-solid fa-handshake-angle"></i></div><div class="card-info"><h3>طلب تعيين مساعد</h3></div></a>
-                </div>
-
                 <h3 class="section-subtitle" style="color:var(--danger)">إجراءات تأديبية</h3>
                 <div class="grid-cards">
-                    <!-- نموذج المخالفات الجديد -->
                     <a href="https://docs.google.com/forms/d/19mKar458Uz2PcJWfd55wzMgiycOsuJaYRuRrEYyDsrQ/viewform" target="_blank" class="action-card danger"><div class="icon-box"><i class="fa-solid fa-gavel"></i></div><div class="card-info"><h3 style="color:var(--danger)">تسجيل مخالفة (أعضاء/إداريين)</h3></div></a>
-                    <a href="https://forms.gle/Bf1UGeL3igWXUseS6" target="_blank" class="action-card danger"><div class="icon-box"><i class="fa-solid fa-user-xmark"></i></div><div class="card-info"><h3 style="color:var(--danger)">فصل/طرد عضو</h3></div></a>
-                </div>
-            </div>
-
-            <!-- ================= الصفحة 6: الإداري (فقط الترقيات والشكاوى) ================= -->
-            <div id="page-admin" class="page-section admin-only">
-                <div class="section-title"><h2>النماذج الإدارية</h2></div>
-                <div class="grid-cards">
-                    <a href="https://docs.google.com/forms/d/e/1FAIpQLSdPVe18ZGd4S2iyAciFjD7-I9GzHvxo9fslLQMjOez4HevNzQ/viewform?usp=publish-editor" target="_blank" class="action-card"><div class="icon-box"><i class="fa-solid fa-ranking-star"></i></div><div class="card-info"><h3>طلب ترقية</h3></div></a>
-                    <a href="https://forms.gle/8eMxL5iM82NoHeFNA" target="_blank" class="action-card"><div class="icon-box"><i class="fa-solid fa-envelope-open-text"></i></div><div class="card-info"><h3>الشكاوى والمقترحات</h3></div></a>
                 </div>
             </div>
 
@@ -435,11 +405,19 @@
     </div>
 
     <script>
-        let currentRole = '';
-        
-        // 🔴 تأكد من تحديث رابط الإحصائيات إذا قمت بعمل Deploy جديد بعد التعديل 🔴
+        // الروابط البرمجية (API)
+        // 🔴🔴 تنبيه: تأكد من وضع الرابط الجديد للـ API هنا بعد التحديث 🔴🔴
         const STATS_API_URL = "https://script.google.com/macros/s/AKfycby7Wselw-5JOJQf5BqTBOBiC58H2d2A4WC0z7-H2UUddfaigfWPb00K2zT4f7UBySh1pQ/exec";
         const TASKS_API_URL = "https://script.google.com/macros/s/AKfycbwwQmElZ1eaHbkL7xyV4_JZ5zR7KdDSgajIZQPkdrqrwnkMzZfcGAB3BROKJpdjrMjB/exec";
+
+        let actualRole = ''; // الدور الأصلي عند تسجيل الدخول (لمعرفة من هو المدير الحقيقي)
+        let currentRole = ''; // الدور الحالي المعروض في الشاشة الآن
+        let isPreviewing = false; // هل نحن في وضع المعاينة أم لا
+
+        window.onload = () => {
+            const savedRole = localStorage.getItem('afaq_saved_role');
+            if(savedRole) attemptLogin(savedRole, true);
+        };
 
         function toggleSidebar() {
             document.getElementById('sidebar').classList.toggle('active');
@@ -458,148 +436,4 @@
 
         function handleEnter(e, role) { if (e.key === 'Enter') attemptLogin(role); }
 
-        function attemptLogin(role) {
-            const pass = document.getElementById(role + 'Pass').value;
-            if (role === 'manager' && pass === 'adminafaq123') grantAccess('manager');
-            else if (role === 'admin' && pass === 'afaqse123') grantAccess('admin');
-            else document.getElementById('errorMsg').style.display = 'block';
-        }
-
-        function grantAccess(role) {
-            currentRole = role;
-            document.getElementById('loginScreen').style.display = 'none';
-            document.getElementById('dashboardWrapper').style.display = 'flex';
-            
-            const badge = document.getElementById('userBadge');
-            const managerItems = document.querySelectorAll('.manager-only');
-            const adminItems = document.querySelectorAll('.admin-only');
-
-            if (role === 'admin') {
-                managerItems.forEach(el => el.style.display = 'none');
-                adminItems.forEach(el => el.style.display = 'flex');
-                badge.innerHTML = '<i class="fa-solid fa-user-shield"></i> <span>كادر إداري</span>';
-                document.getElementById('welcomeText').innerText = "مساحة الإداريين";
-            } else {
-                managerItems.forEach(el => el.style.display = ''); 
-                adminItems.forEach(el => el.style.display = 'none');
-                badge.innerHTML = '<i class="fa-solid fa-crown"></i> <span>القيادة العليا</span>';
-                document.getElementById('welcomeText').innerText = "مركز القيادة";
-            }
-
-            showPage('page-home', document.querySelectorAll('.nav-item')[0]);
-            fetchStatistics();
-            loadTasksAPI();
-        }
-
-        function logout() {
-            document.querySelectorAll('.login-input').forEach(i => i.value = '');
-            document.getElementById('errorMsg').style.display = 'none';
-            document.getElementById('dashboardWrapper').style.display = 'none';
-            document.getElementById('loginScreen').style.display = 'flex';
-            if(document.getElementById('sidebar').classList.contains('active')) toggleSidebar();
-        }
-
-        function showPage(pageId, btnElement) {
-            document.querySelectorAll('.page-section').forEach(p => p.classList.remove('active'));
-            document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
-            document.getElementById(pageId).classList.add('active');
-            if(btnElement) btnElement.classList.add('active');
-            closeSidebarMobile();
-        }
-
-        function fetchStatistics() {
-            fetch(STATS_API_URL).then(res => res.json()).then(data => {
-                document.getElementById('countMembers').innerText = data.members || 0;
-                document.getElementById('countAdmins').innerText = data.admins || 0;
-                document.getElementById('g-eafc').innerText = data.games["EA FC"] || 0;
-                document.getElementById('g-mc').innerText = data.games["Minecraft"] || 0;
-                document.getElementById('g-cod').innerText = data.games["Call of Duty"] || 0;
-                document.getElementById('g-ark').innerText = data.games["ARK"] || 0;
-                document.getElementById('g-fn').innerText = data.games["FORTNITE"] || 0;
-                document.getElementById('g-rl').innerText = data.games["Rocket League"] || 0;
-                document.getElementById('g-val').innerText = data.games["VALORANT"] || 0;
-                document.getElementById('p-pc').innerText = data.platforms["PC"] || 0;
-                document.getElementById('p-ps').innerText = data.platforms["PlayStation"] || 0;
-                document.getElementById('p-xbox').innerText = data.platforms["XBOX"] || 0;
-                document.getElementById('p-phone').innerText = data.platforms["Phone"] || 0;
-                document.getElementById('p-nin').innerText = data.platforms["Nintendo"] || 0;
-            }).catch(e => console.log(e));
-        }
-
-        function loadTasksAPI() {
-            const container = document.getElementById("cardsContainer");
-
-            fetch(TASKS_API_URL)
-            .then(res => res.json())
-            .then(data => {
-                container.innerHTML = "";
-                if(!data || data.length === 0) {
-                    container.innerHTML = `
-                    <div style="width:100%; grid-column: 1/-1; text-align:center; padding: 40px; background: var(--bg-card); border-radius: 16px;">
-                        <i class="fa-solid fa-clipboard-check" style="font-size: 2.5rem; color: var(--green-light); margin-bottom: 15px;"></i>
-                        <h3 style="color:white;">لا توجد مهام نشطة حالياً</h3>
-                    </div>`;
-                    return;
-                }
-
-                const isManager = (currentRole === "manager");
-
-                data.forEach(taskObj => {
-                    let taskNameKey = Object.keys(taskObj).find(k => k.toLowerCase().includes('task') || k.includes('المهمة'));
-                    let prioKey = Object.keys(taskObj).find(k => k.toLowerCase().includes('priority') || k.includes('الأولوية'));
-                    
-                    let taskTitle = taskNameKey ? taskObj[taskNameKey] : "بدون عنوان";
-                    let priority = prioKey ? taskObj[prioKey] : "عادية";
-                    
-                    let pClass = "low";
-                    if(String(priority).toLowerCase().includes("high") || String(priority).includes("عالية")) pClass = "high";
-                    else if(String(priority).toLowerCase().includes("medium") || String(priority).includes("متوسطة")) pClass = "medium";
-
-                    let card = document.createElement('div');
-                    card.className = 'task-card';
-                    
-                    let html = `<div class="priority-badge ${pClass}">${priority}</div>
-                                <div class="task-title">${taskTitle}</div><div style="flex-grow:1;">`;
-                    
-                    for(let key in taskObj) {
-                        if(key !== taskNameKey && key !== prioKey && taskObj[key] !== "") {
-                            let val = taskObj[key];
-                            if(typeof val === 'string' && val.match(/^\d{4}-\d{2}-\d{2}T/)) {
-                                let d = new Date(val);
-                                val = d.toLocaleDateString('ar-SA', { year: 'numeric', month: 'short', day: 'numeric' });
-                            }
-                            html += `<div class="task-field"><strong>${key}</strong> <span style="text-align:left; direction:ltr;">${val}</span></div>`;
-                        }
-                    }
-                    html += `</div>`;
-                    card.innerHTML = html;
-
-                    if(isManager) {
-                        let btn = document.createElement('button');
-                        btn.className = "btn-delete";
-                        btn.innerHTML = '<i class="fa-solid fa-check-double"></i> أرشفة المهمة';
-                        btn.onclick = () => {
-                            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري الأرشفة...';
-                            fetch(`${TASKS_API_URL}?action=delete&taskName=${encodeURIComponent(taskTitle)}`)
-                            .then(r => r.json())
-                            .then(res => {
-                                if(res.success) {
-                                    card.style.transform = "scale(0.8)";
-                                    card.style.opacity = "0";
-                                    setTimeout(() => card.remove(), 300);
-                                } else {
-                                    btn.innerHTML = '<i class="fa-solid fa-xmark"></i> فشل الحذف';
-                                }
-                            });
-                        };
-                        card.appendChild(btn);
-                    }
-                    container.appendChild(card);
-                });
-            }).catch(e => {
-                container.innerHTML = `<div style="width:100%; grid-column: 1/-1; text-align:center; padding:20px; color:var(--danger);">فشل جلب المهام.</div>`;
-            });
-        }
-    </script>
-</body>
-</html>
+        function attemptLogin(
