@@ -14,8 +14,7 @@
             --gradient: linear-gradient(135deg, var(--green-light), var(--green-dark));
             --text-main: #f4f4f5; --text-muted: #a1a1aa;
             --border: #27272a; --danger: #ef4444; --warning: #f59e0b;
-            --sidebar-width: 280px;
-            --glass-bg: rgba(24, 24, 27, 0.7);
+            --sidebar-width: 280px; --glass-bg: rgba(24, 24, 27, 0.7);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Tajawal', sans-serif; -webkit-tap-highlight-color: transparent; }
@@ -24,576 +23,203 @@
         /* ================= شاشة الدخول ================= */
         #loginScreen { position: fixed; inset: 0; z-index: 9999; background: radial-gradient(circle at top left, var(--green-dark) 0%, var(--bg-main) 60%); display: flex; justify-content: center; align-items: center; padding: 20px; }
         .login-box { background: var(--glass-bg); backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.05); border-radius: 24px; padding: 40px 30px; width: 100%; max-width: 400px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
-        .login-box img { width: 90px; margin-bottom: 15px; filter: drop-shadow(0 0 15px rgba(0,170,97,0.3)); }
+        .login-box img { width: 90px; margin-bottom: 15px; }
         .login-tabs { display: flex; margin-bottom: 30px; background: rgba(0,0,0,0.3); border-radius: 12px; padding: 5px; }
         .login-tab { flex: 1; padding: 10px; cursor: pointer; color: var(--text-muted); font-weight: 700; border-radius: 8px; transition: 0.3s; font-size: 0.95rem; }
-        .login-tab.active { background: var(--bg-card); color: var(--green-light); box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+        .login-tab.active { background: var(--bg-card); color: var(--green-light); }
         .login-form { display: none; flex-direction: column; gap: 15px; }
         .login-form.active { display: flex; animation: fadeInUp 0.4s ease; }
         .login-input { background: rgba(0,0,0,0.4); border: 1px solid var(--border); color: white; padding: 16px; border-radius: 12px; text-align: center; font-size: 1rem; transition: 0.3s; outline: none; }
-        .login-input:focus { border-color: var(--green-light); box-shadow: 0 0 0 3px rgba(0,170,97,0.15); }
-        .login-btn { background: var(--gradient); border: none; color: white; padding: 16px; border-radius: 12px; font-weight: 800; font-size: 1.1rem; cursor: pointer; transition: 0.3s; display: flex; justify-content: center; gap: 10px; }
+        .login-btn { background: var(--gradient); border: none; color: white; padding: 16px; border-radius: 12px; font-weight: 800; cursor: pointer; transition: 0.3s; display: flex; justify-content: center; gap: 10px; }
         .login-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,170,97,0.3); }
-        #errorMsg { color: var(--danger); font-size: 0.85rem; margin-top: 15px; display: none; background: rgba(239, 68, 68, 0.1); padding: 10px; border-radius: 8px; }
 
         /* ================= التخطيط الأساسي ================= */
         #dashboardWrapper { display: none; min-height: 100vh; flex-direction: column; }
-        .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); z-index: 90; opacity: 0; transition: 0.3s; }
+        .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 90; }
+        .sidebar { width: var(--sidebar-width); background: var(--bg-card); border-left: 1px solid var(--border); position: fixed; top: 0; right: 0; height: 100vh; display: flex; flex-direction: column; z-index: 100; transition: transform 0.4s; }
+        .brand { padding: 30px 25px; border-bottom: 1px solid var(--border); }
+        .nav-menu { padding: 15px; flex: 1; }
+        .nav-item { display: flex; align-items: center; gap: 15px; padding: 14px; color: var(--text-muted); text-decoration: none; border-radius: 12px; font-weight: 700; cursor: pointer; transition: 0.3s; }
+        .nav-item.active { background: var(--gradient); color: white; }
+        .logout-btn { width: 90%; margin: 20px auto; background: rgba(239, 68, 68, 0.1); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.2); padding: 14px; border-radius: 12px; font-weight: 800; cursor: pointer; }
         
-        .sidebar { width: var(--sidebar-width); background: var(--bg-card); border-left: 1px solid var(--border); position: fixed; top: 0; right: 0; height: 100vh; display: flex; flex-direction: column; z-index: 100; transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
-        .brand { display: flex; align-items: center; gap: 15px; padding: 30px 25px 20px; border-bottom: 1px solid var(--border); margin-bottom: 15px; }
-        .brand img { width: 45px; }
-        .brand h1 { font-size: 1.2rem; font-weight: 800; }
-        .brand span { font-size: 0.75rem; color: var(--green-light); font-weight: 700; text-transform: uppercase; }
+        .main-content { margin-right: var(--sidebar-width); padding: 30px 40px; flex: 1; }
+        .top-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 35px; background: var(--glass-bg); padding: 20px 25px; border-radius: 16px; border: 1px solid var(--border); }
         
-        .nav-menu { display: flex; flex-direction: column; gap: 8px; padding: 0 15px 20px; overflow-y: auto; flex:1; }
-        .nav-menu::-webkit-scrollbar { width: 5px; }
-        .nav-menu::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
-        
-        .nav-item { display: flex; align-items: center; gap: 15px; padding: 14px 18px; color: var(--text-muted); text-decoration: none; border-radius: 12px; font-weight: 700; transition: 0.3s; cursor: pointer; }
-        .nav-item i { font-size: 1.2rem; width: 22px; text-align: center; }
-        .nav-item:hover { background: var(--bg-card-hover); color: var(--text-main); }
-        .nav-item.active { background: var(--gradient); color: white; box-shadow: 0 4px 15px rgba(0,170,97,0.25); }
-        .logout-box { padding: 20px; border-top: 1px solid var(--border); }
-        .logout-btn { width: 100%; background: rgba(239, 68, 68, 0.1); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.2); padding: 14px; border-radius: 12px; font-weight: 800; cursor: pointer; display: flex; justify-content: center; gap: 10px; transition: 0.3s;}
-        
-        .main-content { margin-right: var(--sidebar-width); padding: 30px 40px; flex: 1; transition: 0.3s; }
-        .top-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 35px; background: var(--glass-bg); backdrop-filter: blur(10px); padding: 20px 25px; border-radius: 16px; border: 1px solid var(--border); z-index: 50; }
-        .header-info h2 { font-size: 1.4rem; font-weight: 800; margin-bottom: 5px; }
-        .header-info p { color: var(--text-muted); font-size: 0.9rem; }
-        .user-badge { background: rgba(0,170,97,0.1); border: 1px solid rgba(0,170,97,0.3); color: var(--green-light); padding: 8px 16px; border-radius: 30px; font-size: 0.85rem; font-weight: 800; display: flex; gap: 8px; align-items: center;}
-        .menu-toggle { display: none; background: transparent; border: none; color: white; font-size: 1.5rem; cursor: pointer; }
-
-        .page-section { display: none; animation: fadeIn 0.4s ease; }
+        .page-section { display: none; }
         .page-section.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* ================= المكونات ================= */
-        .section-title { margin-bottom: 25px; border-right: 4px solid var(--green-light); padding-right: 15px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
-        .section-title h2 { font-size: 1.3rem; font-weight: 800; }
-        .section-subtitle { margin: 35px 0 20px; font-size: 1.1rem; color: var(--text-muted); font-weight: 700; display:flex; align-items:center; gap:8px;}
-        .section-subtitle::before { content: ''; display: block; width: 8px; height: 8px; background: var(--green-light); border-radius: 50%; }
-
-        .grid-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px; margin-bottom: 35px; }
-        .action-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 20px; display: flex; align-items: center; gap: 18px; text-decoration: none; color: inherit; transition: 0.3s; }
-        .action-card:hover { transform: translateY(-4px); border-color: var(--green-light); background: var(--bg-card-hover); }
-        .icon-box { width: 50px; height: 50px; border-radius: 14px; background: rgba(0, 170, 97, 0.1); display: flex; justify-content: center; align-items: center; font-size: 1.3rem; color: var(--green-light); transition: 0.3s; }
         
-        .action-card.danger { border-color: rgba(239,68,68,0.3); }
-        .action-card.danger .icon-box { color: var(--danger); background: rgba(239, 68, 68, 0.1); }
-        .action-card.danger:hover { border-color: var(--danger); }
-        .action-card.danger:hover .icon-box { background: var(--danger); color: white; }
+        /* البطاقات والجدول */
+        .grid-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px; margin-bottom: 35px; }
+        .action-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 20px; display: flex; align-items: center; gap: 15px; text-decoration: none; color: white; }
+        .icon-box { width: 50px; height: 50px; border-radius: 14px; background: var(--green-light); display: flex; align-items: center; justify-content: center; }
         
         .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 15px; margin-bottom: 35px; }
-        .stat-card { background: var(--gradient); border-radius: 20px; padding: 30px 25px; position: relative; overflow: hidden; }
-        .stat-card.outline { background: var(--bg-card); border: 1px solid rgba(0,170,97,0.5); }
-        .stat-num { font-size: 3.5rem; font-weight: 900; color: white; line-height: 1; margin-bottom: 10px; }
-        .stat-card.outline .stat-num { color: var(--green-light); }
-        .stat-label { font-size: 1.05rem; font-weight: 700; color: rgba(255,255,255,0.9); }
-        .stat-card.outline .stat-label { color: var(--text-muted); }
+        .stat-card { background: var(--gradient); border-radius: 20px; padding: 30px; text-align: center; }
+        .stat-num { font-size: 3rem; font-weight: 900; }
+        
+        .table-responsive { width: 100%; overflow-x: auto; background: var(--bg-card); border-radius: 12px; padding: 20px; }
+        .styled-table { width: 100%; border-collapse: collapse; text-align: right; }
+        .styled-table th, .styled-table td { padding: 15px; border-bottom: 1px solid var(--border); }
+        
+        .task-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 20px; margin-bottom: 15px; }
+        .btn-delete { margin-top: 10px; background: var(--danger); color: white; border: none; padding: 10px; border-radius: 8px; cursor: pointer; }
 
-        .mini-stats-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 12px; margin-bottom: 40px; }
-        .mini-stat { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 20px 15px; text-align: center; transition: 0.3s; }
-        .mini-stat i { font-size: 1.8rem; color: var(--text-muted); margin-bottom: 12px; transition: 0.3s; }
-        .mini-stat:hover { border-color: var(--green-light); transform: translateY(-4px); }
-        .mini-stat:hover i { color: var(--green-light); }
-        .mini-stat .num { font-size: 1.6rem; font-weight: 900; line-height: 1; }
-        .mini-stat .label { font-size: 0.8rem; color: var(--text-muted); margin-top: 8px; }
-
-        /* المهام (Kanban) */
-        .tasks-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 15px; align-items: start; }
-        .task-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 22px; position: relative; transition: 0.3s; display:flex; flex-direction: column; }
-        .task-card:hover { border-color: var(--green-light); transform: translateY(-3px); }
-        .priority-badge { position: absolute; top: 22px; left: 22px; padding: 4px 12px; border-radius: 6px; font-size: 0.75rem; font-weight: 800; color: #fff; text-transform: uppercase; }
-        .high { background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); }
-        .medium { background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); }
-        .low { background: rgba(0, 170, 97, 0.2); color: var(--green-light); border: 1px solid rgba(0, 170, 97, 0.3); }
-        
-        .task-title { font-size: 1.15rem; font-weight: 800; margin-bottom: 20px; padding-left: 80px; border-bottom: 1px solid var(--border); padding-bottom: 15px; }
-        .task-field { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 10px; display: flex; justify-content: space-between; gap:10px;}
-        .task-field strong { color: var(--text-main); white-space: nowrap;}
-        
-        .btn-delete { margin-top: 20px; width: 100%; padding: 12px; cursor: pointer; border: 1px solid var(--border); border-radius: 10px; background: transparent; color: var(--text-muted); font-weight: 800; transition: 0.3s; display: flex; justify-content: center; gap: 8px; }
-        .btn-delete:hover { background: rgba(239, 68, 68, 0.1); border-color: rgba(239, 68, 68, 0.3); color: var(--danger); }
-        .btn-primary { background: var(--green-light); color: var(--bg-main); padding: 10px 20px; border-radius: 10px; font-weight: 800; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; transition: 0.3s; }
-        
-        /* التقويم والمناسبات */
-        .calendar-wrapper { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; margin-bottom: 40px; }
-        .embed-container { background: var(--bg-card); border-radius: 16px; border: 1px solid var(--border); overflow: hidden; height: 500px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
-        .embed-container iframe { width: 100%; height: 100%; border: none; }
-        
-        .events-list { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 20px; height: 500px; overflow-y: auto; }
-        .events-list::-webkit-scrollbar { width: 5px; }
-        .events-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
-        .event-item { display: flex; align-items: center; gap: 15px; padding: 15px 0; border-bottom: 1px dashed var(--border); }
-        .event-item:last-child { border-bottom: none; }
-        .event-date { background: rgba(0, 170, 97, 0.1); color: var(--green-light); padding: 10px; border-radius: 10px; text-align: center; min-width: 65px; font-weight: 800; line-height: 1.2; border: 1px solid rgba(0,170,97,0.2); }
-        .event-date span { display: block; font-size: 0.75rem; font-weight: 400; color: var(--text-muted); }
-        .event-name { font-weight: 700; font-size: 0.95rem; }
-
-        /* السياسات العامة */
-        .policy-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 30px; margin-bottom: 20px; }
-        .policy-card h3 { color: var(--green-light); margin-bottom: 15px; font-size: 1.2rem; display: flex; align-items: center; gap: 10px; }
-        .policy-card p { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 10px; }
-        .policy-card ul { list-style: none; padding: 0; }
-        .policy-card ul li { color: var(--text-main); font-size: 0.95rem; margin-bottom: 10px; padding-right: 20px; position: relative; }
-        .policy-card ul li::before { content: '\f0da'; font-family: "Font Awesome 6 Free"; font-weight: 900; position: absolute; right: 0; color: var(--green-light); }
-        
-        .table-responsive { width: 100%; overflow-x: auto; margin-top: 15px; border-radius: 12px; border: 1px solid var(--border); }
-        .styled-table { width: 100%; border-collapse: collapse; text-align: right; min-width: 600px; }
-        .styled-table th, .styled-table td { padding: 15px; border-bottom: 1px solid var(--border); font-size: 0.9rem; }
-        .styled-table th { background: var(--bg-card-hover); color: white; font-weight: 800; }
-        .styled-table tr:hover { background: rgba(255,255,255,0.02); }
-        .badge-danger { background: rgba(239,68,68,0.1); color: var(--danger); padding: 5px 10px; border-radius: 6px; font-size: 0.8rem; font-weight: 700; border: 1px solid rgba(239,68,68,0.2); }
-        .badge-warning { background: rgba(245,158,11,0.1); color: var(--warning); padding: 5px 10px; border-radius: 6px; font-size: 0.8rem; font-weight: 700; border: 1px solid rgba(245,158,11,0.2); }
-
-        /* ================= استجابة الهاتف ================= */
         @media (max-width: 992px) {
-            .sidebar { transform: translateX(100%); width: 280px; box-shadow: -5px 0 25px rgba(0,0,0,0.5); }
+            .sidebar { transform: translateX(100%); }
             .sidebar.active { transform: translateX(0); }
-            .sidebar-overlay.active { display: block; opacity: 1; }
-            .main-content { margin-right: 0; padding: 15px; padding-top: 90px; } 
-            .top-header { position: fixed; top: 10px; right: 15px; left: 15px; padding: 15px; margin-bottom: 0; }
-            .header-info p { display: none; } 
-            .header-info h2 { font-size: 1.1rem; }
-            .user-badge span { display: none; } 
-            .menu-toggle { display: block; }
-            .stats-grid { grid-template-columns: 1fr; }
-            .mini-stats-grid { grid-template-columns: repeat(2, 1fr); }
-            .calendar-wrapper { grid-template-columns: 1fr; }
-            .embed-container, .events-list { height: 400px; }
-            .section-title { flex-direction: column; align-items: flex-start; }
-            .section-title .btn-primary { width: 100%; justify-content: center; margin-top: 10px;}
-            .tasks-container { grid-template-columns: 1fr; }
+            .main-content { margin-right: 0; padding-top: 100px; }
+            .top-header { position: fixed; top: 10px; right: 10px; left: 10px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- شاشة الدخول -->
+    <!-- الدخول -->
     <div id="loginScreen">
         <div class="login-box">
-            <img src="https://i.ibb.co/TMVG5JMr/white-logo.png" alt="Afaq Logo">
-            <h2 style="font-weight: 900;">مركز القيادة</h2>
-            <p style="color:var(--text-muted); margin-bottom: 5px; font-size: 0.95rem;">لفريق الرياضات الإلكترونية</p>
-            <p style="color:var(--green-light); margin-bottom: 30px; font-size: 0.8rem; font-weight: 800;">POWERED BY AFAQ CLUB</p>
-            
+            <img src="https://i.ibb.co/TMVG5JMr/white-logo.png" alt="Logo">
+            <h2>مركز القيادة</h2>
             <div class="login-tabs">
                 <div class="login-tab active" onclick="switchLoginTab('manager')">المدير العام</div>
                 <div class="login-tab" onclick="switchLoginTab('admin')">الكادر الإداري</div>
             </div>
-
             <div id="login-manager" class="login-form active">
-                <input type="password" id="managerPass" class="login-input" placeholder="كلمة المرور" onkeypress="handleEnter(event, 'manager')">
-                <button class="login-btn" onclick="attemptLogin('manager')">دخول آمن <i class="fa-solid fa-arrow-left"></i></button>
+                <input type="password" id="managerPass" class="login-input" placeholder="كلمة المرور">
+                <button class="login-btn" onclick="attemptLogin('manager')">دخول آمن</button>
             </div>
-
             <div id="login-admin" class="login-form">
-                <input type="password" id="adminPass" class="login-input" placeholder="كلمة المرور" onkeypress="handleEnter(event, 'admin')">
-                <button class="login-btn" onclick="attemptLogin('admin')">دخول آمن <i class="fa-solid fa-arrow-left"></i></button>
+                <input type="password" id="adminPass" class="login-input" placeholder="كلمة المرور">
+                <button class="login-btn" onclick="attemptLogin('admin')">دخول آمن</button>
             </div>
-            <p id="errorMsg">بيانات الدخول غير صحيحة!</p>
+            <p id="errorMsg">خطأ في كلمة المرور!</p>
         </div>
     </div>
 
-    <!-- الهيكل الرئيسي -->
+    <!-- المحتوى -->
     <div id="dashboardWrapper">
-        <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
-
         <aside class="sidebar" id="sidebar">
-            <div class="brand">
-                <img src="https://i.ibb.co/TMVG5JMr/white-logo.png" alt="Logo">
-                <div><h1>نادي آفاق</h1><span>eSports HQ</span></div>
-            </div>
-            
+            <div class="brand"><h1>نادي آفاق</h1><span>eSports HQ</span></div>
             <nav class="nav-menu">
-                <a class="nav-item active" onclick="showPage('page-home', this)"><i class="fa-solid fa-chart-pie"></i> <span>الرئيسية والتقويم</span></a>
-                <a class="nav-item" onclick="showPage('page-tasks', this)"><i class="fa-solid fa-list-check"></i> <span>المهام والمشاريع</span></a>
-                <a class="nav-item" onclick="showPage('page-shared', this)"><i class="fa-solid fa-link"></i> <span>الموارد والروابط</span></a>
-                <a class="nav-item" onclick="showPage('page-policies', this)"><i class="fa-solid fa-scale-balanced"></i> <span>السياسات العامة</span></a>
-                <div style="height: 1px; background: rgba(255,255,255,0.05); margin: 10px 0;"></div>
-                <a class="nav-item manager-only" onclick="showPage('page-manager', this)"><i class="fa-solid fa-briefcase"></i> <span>إدارة النادي</span></a>
-                <a class="nav-item admin-only" onclick="showPage('page-admin', this)" style="display: none;"><i class="fa-solid fa-file-signature"></i> <span>النماذج الإدارية</span></a>
+                <a class="nav-item active" onclick="showPage('page-home', this)"><i class="fa-solid fa-chart-pie"></i> الرئيسية</a>
+                <a class="nav-item" onclick="showPage('page-tasks', this)"><i class="fa-solid fa-list-check"></i> المهام</a>
+                <a class="nav-item" onclick="showPage('page-shared', this)"><i class="fa-solid fa-link"></i> الموارد</a>
+                <a class="nav-item manager-only" onclick="showPage('page-manager', this)"><i class="fa-solid fa-briefcase"></i> إدارة النادي</a>
+                <a class="nav-item admin-only" onclick="showPage('page-admin', this)" style="display:none;"><i class="fa-solid fa-file-signature"></i> النماذج</a>
             </nav>
-
-            <div class="logout-box">
-                <button class="logout-btn" onclick="logout()"><i class="fa-solid fa-arrow-right-from-bracket"></i> <span>تسجيل الخروج</span></button>
-            </div>
+            <button class="logout-btn" onclick="logout()">تسجيل الخروج</button>
         </aside>
 
         <main class="main-content">
             <header class="top-header">
-                <div style="display: flex; align-items: center; gap: 15px;">
-                    <button class="menu-toggle" onclick="toggleSidebar()"><i class="fa-solid fa-bars-staggered"></i></button>
-                    <div class="header-info">
-                        <h2 id="welcomeText">مركز القيادة</h2>
-                        <p>الإدارة المركزية لعمليات فريق الرياضات الإلكترونية</p>
-                    </div>
-                </div>
-                <div class="user-badge" id="userBadge"><i class="fa-solid fa-shield-halved"></i> <span>مصادقة...</span></div>
+                <div class="header-info"><h2 id="welcomeText">مركز القيادة</h2></div>
+                <div class="user-badge" id="userBadge"></div>
             </header>
 
-            <!-- ================= الصفحة 1: الإحصائيات والتقويم ================= -->
+            <!-- الصفحة 1 -->
             <div id="page-home" class="page-section active">
-                <div class="section-title"><h2>نبض الفريق</h2></div>
                 <div class="stats-grid">
-                    <div class="stat-card"><div class="stat-num" id="countMembers"><i class="fa-solid fa-spinner fa-spin"></i></div><div class="stat-label">الأعضاء النشطين</div></div>
-                    <div class="stat-card outline"><div class="stat-num" id="countAdmins"><i class="fa-solid fa-spinner fa-spin"></i></div><div class="stat-label">الطاقم الإداري</div></div>
+                    <div class="stat-card"><div class="stat-num" id="countMembers">--</div><div>الأعضاء</div></div>
+                    <div class="stat-card outline"><div class="stat-num" id="countAdmins">--</div><div>الإداريون</div></div>
                 </div>
-
-                <div class="section-title"><h2>القوة الضاربة (الألعاب)</h2></div>
-                <div class="mini-stats-grid">
-                    <div class="mini-stat"><i class="fa-solid fa-futbol"></i><div class="num" id="g-eafc">-</div><div class="label">EA FC</div></div>
-                    <div class="mini-stat"><i class="fa-solid fa-cubes"></i><div class="num" id="g-mc">-</div><div class="label">Minecraft</div></div>
-                    <div class="mini-stat"><i class="fa-solid fa-person-rifle"></i><div class="num" id="g-cod">-</div><div class="label">Call of Duty</div></div>
-                    <div class="mini-stat"><i class="fa-brands fa-d-and-d"></i><div class="num" id="g-ark">-</div><div class="label">ARK</div></div>
-                    <div class="mini-stat"><i class="fa-solid fa-truck-droplet"></i><div class="num" id="g-fn">-</div><div class="label">FORTNITE</div></div>
-                    <div class="mini-stat"><i class="fa-solid fa-car-burst"></i><div class="num" id="g-rl">-</div><div class="label">Rocket League</div></div>
-                    <div class="mini-stat"><i class="fa-solid fa-crosshairs"></i><div class="num" id="g-val">-</div><div class="label">VALORANT</div></div>
-                </div>
-
-                <div class="section-title"><h2>جدولة العمليات وأهم المناسبات</h2></div>
-                <div class="calendar-wrapper">
-                    <!-- التقويم العام -->
-                    <div class="embed-container">
-                        <iframe src="https://calendar.google.com/calendar/embed?src=23d87417ba91caca1cc0b90940e951b82a35f165e44e2dbf090e9963128ecf9c@group.calendar.google.com&ctz=Asia/Riyadh&bgcolor=%2318181b&color=%2300aa61"></iframe>
-                    </div>
-                    <!-- قائمة المناسبات -->
-                    <div class="events-list">
-                        <h3 style="margin-bottom: 15px; color: white; border-bottom: 1px solid var(--border); padding-bottom: 10px;">أجندة المناسبات السنوية</h3>
-                        <div class="event-item"><div class="event-date">1 <span>يناير</span></div><div class="event-name">رأس السنة الميلادية</div></div>
-                        <div class="event-item"><div class="event-date">24 <span>يناير</span></div><div class="event-name">اليوم الدولي للتعليم</div></div>
-                        <div class="event-item"><div class="event-date">22 <span>فبراير</span></div><div class="event-name">يوم التأسيس السعودي</div></div>
-                        <div class="event-item"><div class="event-date">- <span>رمضان</span></div><div class="event-name">دخول شهر رمضان</div></div>
-                        <div class="event-item"><div class="event-date">8 <span>مارس</span></div><div class="event-name">اليوم العالمي للمرأة</div></div>
-                        <div class="event-item"><div class="event-date">11 <span>مارس</span></div><div class="event-name">يوم العلم السعودي</div></div>
-                        <div class="event-item"><div class="event-date">- <span>شوال</span></div><div class="event-name">عيد الفطر المبارك</div></div>
-                        <div class="event-item"><div class="event-date">21 <span>مارس</span></div><div class="event-name">يوم الأم</div></div>
-                        <div class="event-item"><div class="event-date">- <span>ذو الحجة</span></div><div class="event-name">عيد الأضحى المبارك</div></div>
-                        <div class="event-item"><div class="event-date">- <span>محرم</span></div><div class="event-name">رأس السنة الهجرية</div></div>
-                        <div class="event-item"><div class="event-date">23 <span>سبتمبر</span></div><div class="event-name">اليوم الوطني السعودي</div></div>
-                        <div class="event-item"><div class="event-date">10 <span>أكتوبر</span></div><div class="event-name">اليوم العالمي للصحة النفسية</div></div>
-                        <div class="event-item"><div class="event-date">10 <span>نوفمبر</span></div><div class="event-name">اليوم العالمي للعلوم</div></div>
-                        <div class="event-item"><div class="event-date">12 <span>نوفمبر</span></div><div class="event-name" style="color:var(--green-light)">ذكرى تأسيس آفاق</div></div>
-                        <div class="event-item"><div class="event-date">10 <span>ديسمبر</span></div><div class="event-name">اليوم العالمي لحقوق الإنسان</div></div>
-                        <div class="event-item"><div class="event-date">18 <span>ديسمبر</span></div><div class="event-name">اليوم العالمي للغة العربية</div></div>
-                    </div>
-                </div>
+                <div class="embed-container"><iframe src="https://calendar.google.com/calendar/embed?src=23d87417ba91caca1cc0b90940e951b82a35f165e44e2dbf090e9963128ecf9c@group.calendar.google.com&ctz=Asia/Riyadh"></iframe></div>
             </div>
 
-            <!-- ================= الصفحة 2: السياسات العامة ================= -->
-            <div id="page-policies" class="page-section">
-                <div class="section-title"><h2>السياسات العامة لنادي آفاق (الإصدار الثالث)</h2></div>
-                
-                <div class="policy-card">
-                    <h3><i class="fa-solid fa-bullseye"></i> رسالة وفكرة النادي</h3>
-                    <p>نادي آفاق هو مجتمع شبابي تفاعلي يجمع أصحاب الشغف في مكان واحد، لكسر الحواجز الجغرافية وتوفير مساحة للتجربة وإطلاق المبادرات.</p>
-                    <p>يسعى النادي ليكون بيئة محفزة تحتضن الهواة والمهتمين وتطور مهاراتهم وتشجع الابتكار والانتماء.</p>
-                    <div style="margin-top: 15px; padding: 15px; background: rgba(0, 170, 97, 0.05); border-radius: 10px; border: 1px dashed var(--green-light);">
-                        <strong style="color: white;">مبادئ آفاق:</strong> 
-                        <span style="color:var(--green-light)">الانتماء</span> | <span style="color:var(--green-light)">التعاون</span> | <span style="color:var(--green-light)">الابتكار</span> | <span style="color:var(--green-light)">الجودة</span> | <span style="color:var(--green-light)">الأثر</span>
-                    </div>
-                </div>
-
-                <div class="policy-card">
-                    <h3><i class="fa-solid fa-scale-balanced"></i> لائحة السياسات العامة</h3>
-                    <ul>
-                        <li><strong>سياسة الالتزام:</strong> يلتزم جميع منسوبي النادي بالأنظمة، والجهل بها غير مبرر، ويطبق مبدأ العدالة على الجميع.</li>
-                        <li><strong>سياسة السلوك:</strong> التعامل باحترام، ويمنع التنمر والإساءة واستخدام ألفاظ غير لائقة، ويدار الاختلاف بحضارة.</li>
-                        <li><strong>سياسة العضوية:</strong> العضوية تطوعية مرتبطة بالالتزام بالقيم، ويحق للإدارة القبول أو الرفض، ويجب الحفاظ على سمعة النادي.</li>
-                        <li><strong>سياسة التمثيل:</strong> يُمنع استخدام اسم وشعار النادي بدون إذن، والمشاركة الخارجية تتطلب اعتماداً مسبقاً.</li>
-                        <li><strong>سياسة الأنشطة:</strong> جميع الأنشطة تخضع لموافقة تنظيمية ويجب أن تتوافق مع أهداف النادي.</li>
-                        <li><strong>سياسة المسؤوليات الإدارية:</strong> المناصب تكليف تنظيمي وليست تشريفاً، ويحاسب المقصر.</li>
-                        <li><strong>سياسة الخصوصية:</strong> تحترم خصوصية الأعضاء، ويمنع تسريب المحادثات والوثائق الداخلية.</li>
-                    </ul>
-                </div>
-
-                <div class="policy-card">
-                    <h3><i class="fa-solid fa-triangle-exclamation"></i> جدول المخالفات والعقوبات</h3>
-                    <div class="table-responsive">
-                        <table class="styled-table">
-                            <thead>
-                                <tr>
-                                    <th>نوع المخالفة</th>
-                                    <th>الوصف</th>
-                                    <th>العقوبة الأولى</th>
-                                    <th>عند التكرار</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <!-- المخالفات البسيطة -->
-                                <tr style="background: rgba(255,255,255,0.05)"><td colspan="4" style="text-align: center; color: white; font-weight: bold;">المخالفات البسيطة</td></tr>
-                                <tr><td>استخدام ألفاظ غير لائقة</td><td>كلمات غير مناسبة دون إساءة مباشرة</td><td>تنبيه شفهي</td><td>إنذار مكتوب</td></tr>
-                                <tr><td>الإزعاج المتكرر</td><td>سبام، منشن متكرر، إزعاج صوتي</td><td>تنبيه</td><td>كتم مؤقت</td></tr>
-                                <tr><td>تأخر إداري</td><td>تأخر متكرر عن المهام أو الاجتماعات</td><td>تنبيه</td><td>إنذار</td></tr>
-                                
-                                <!-- المخالفات المتوسطة -->
-                                <tr style="background: rgba(255,255,255,0.05)"><td colspan="4" style="text-align: center; color: var(--warning); font-weight: bold;">المخالفات المتوسطة</td></tr>
-                                <tr><td>إساءة لفظية مباشرة</td><td>التقليل أو السخرية من عضو</td><td>إنذار مكتوب</td><td>تعليق مؤقت</td></tr>
-                                <tr><td>إثارة نزاعات</td><td>خلق مشاكل أو تحريض</td><td>إنذار</td><td>تعليق مؤقت</td></tr>
-                                <tr><td>عدم احترام الإداريين</td><td>رفض الأوامر أو الجدال</td><td>إنذار</td><td>تعليق</td></tr>
-                                
-                                <!-- المخالفات الجسيمة -->
-                                <tr style="background: rgba(255,255,255,0.05)"><td colspan="4" style="text-align: center; color: var(--danger); font-weight: bold;">المخالفات الجسيمة</td></tr>
-                                <tr><td>التنمر أو الإهانة</td><td>إساءة نفسية أو لفظية متعمدة</td><td><span class="badge-danger">تعليق أو إبعاد</span></td><td>-</td></tr>
-                                <tr><td>تسريب محادثات</td><td>نشر محتوى خاص بالنادي</td><td><span class="badge-danger">إبعاد مباشر</span></td><td>-</td></tr>
-                                <tr><td>التزوير أو الكذب</td><td>تقديم معلومات مضللة عمداً</td><td><span class="badge-danger">إعفاء وإبعاد</span></td><td>-</td></tr>
-                                <tr><td>التحرش أو التهديد</td><td>تصرف مسيء أو تهديد أعضاء</td><td><span class="badge-danger">إبعاد فوري</span></td><td>-</td></tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <p style="margin-top: 15px; font-size: 0.85rem; color: var(--text-muted);">* يحق للإدارة العليا تجاوز التدرج في حال المخالفات الجسيمة، وتكرار المخالفة يضاعف العقوبة.</p>
-                </div>
-            </div>
-
-            <!-- ================= الصفحة 3: المهام ================= -->
+            <!-- الصفحة 2: المهام -->
             <div id="page-tasks" class="page-section">
-                <div class="section-title">
-                    <h2>المهام النشطة (Kanban)</h2>
-                    <a href="https://forms.gle/TFtTXLcpc46D65Cx7" target="_blank" class="btn-primary manager-only"><i class="fa-solid fa-plus"></i> تكليف جديد</a>
-                </div>
-                
-                <div class="tasks-container" id="cardsContainer">
-                    <div style="width:100%; grid-column: 1/-1; text-align:center; padding: 40px; background: var(--bg-card); border-radius: 16px;">
-                        <i class="fa-solid fa-circle-notch fa-spin" style="font-size: 2rem; color: var(--green-light);"></i>
-                        <h3 style="color:white; margin-top:10px;">جاري جلب المهام...</h3>
-                    </div>
-                </div>
+                <div class="section-title"><h2>المهام النشطة</h2></div>
+                <div id="cardsContainer" class="tasks-container"></div>
             </div>
 
-            <!-- ================= الصفحة 4: الموارد ================= -->
+            <!-- الصفحة 3: الموارد -->
             <div id="page-shared" class="page-section">
-                <div class="section-title"><h2>الموارد والروابط</h2></div>
                 <div class="grid-cards">
-                    <!-- تم تعديل رابط الديسكورد هنا -->
-                    <a href="https://discord.gg/TbUBfFQsEy" target="_blank" class="action-card">
-                        <div class="icon-box" style="color:#5865F2; background:rgba(88,101,242,0.1);"><i class="fa-brands fa-discord"></i></div>
-                        <div class="card-info"><h3>المقر الصوتي (Discord)</h3><p>سيرفر التواصل المباشر والأحداث</p></div>
-                    </a>
-                    <a href="https://deecc.my.canva.site/eateam-link" target="_blank" class="action-card">
-                        <div class="icon-box" style="color:#00C4CC; background:rgba(0,196,204,0.1);"><i class="fa-solid fa-link"></i></div>
-                        <div class="card-info"><h3>مُجمّع الروابط</h3><p>حسابات ومنصات الفريق</p></div>
-                    </a>
+                    <a href="https://discord.gg/TbUBfFQsEy" class="action-card"><div class="icon-box"><i class="fa-brands fa-discord"></i></div><div>ديسكورد الفريق</div></a>
+                    <a href="https://deecc.my.canva.site/eateam-link" class="action-card"><div class="icon-box"><i class="fa-solid fa-link"></i></div><div>الروابط والحسابات</div></a>
+                    <a href="https://drive.google.com/drive/folders/1A3uxWu5okmDGMkejzSZlW6D9BU090_1E?usp=sharing" class="action-card"><div class="icon-box"><i class="fa-brands fa-google-drive"></i></div><div>درايف اللجنة</div></a>
                 </div>
             </div>
 
-            <!-- ================= الصفحة 5: المدير ================= -->
+            <!-- الصفحة 4: المدير -->
             <div id="page-manager" class="page-section manager-only">
-                <h3 class="section-subtitle">قواعد البيانات</h3>
-                <div class="grid-cards">
-                    <a href="https://docs.google.com/spreadsheets/d/1f0cyMMonWVDHzYMTHUbcLgtXJM50l5YB8npYA8geHLo/edit?usp=sharing" target="_blank" class="action-card"><div class="icon-box"><i class="fa-solid fa-users-viewfinder"></i></div><div class="card-info"><h3>سجل الأعضاء</h3></div></a>
-                    <a href="https://docs.google.com/spreadsheets/d/1qlbmw_wR61pqtMxb4IKT3HT9rYteGgNhWWPnUBRynpA/edit?usp=sharing" target="_blank" class="action-card"><div class="icon-box"><i class="fa-solid fa-address-card"></i></div><div class="card-info"><h3>سجل المتقدمين</h3></div></a>
-                </div>
-                
-                <!-- تم نقل قوقل درايف ليكون للمدير فقط -->
-                <h3 class="section-subtitle">الملفات السحابية</h3>
-                <div class="grid-cards">
-                    <a href="https://drive.google.com/drive/folders/1A3uxWu5okmDGMkejzSZlW6D9BU090_1E?usp=sharing" target="_blank" class="action-card">
-                        <div class="icon-box"><i class="fa-brands fa-google-drive"></i></div>
-                        <div class="card-info"><h3>درايف اللجنة (السحابة المركزية)</h3><p>الأرشيف والملفات المشتركة</p></div>
-                    </a>
-                </div>
-
-                <!-- تقويم الإدارة العليا (للمدير فقط) -->
-                <div class="section-title" style="margin-top: 30px;"><h2>تقويم الإدارة العليا</h2></div>
-                <div class="embed-container" style="margin-bottom: 30px;">
-                    <iframe src="https://calendar.google.com/calendar/embed?src=f7bca87b3c9cc65dd29f159038b5beb295d9756bcd539a95545b49c5f4f9f755@group.calendar.google.com&ctz=Asia/Riyadh&bgcolor=%2318181b&color=%2300aa61"></iframe>
-                </div>
-
-                <h3 class="section-subtitle">النماذج</h3>
-                <div class="grid-cards">
-                    <a href="https://forms.gle/hKGyt5k2DE61QzdK7" target="_blank" class="action-card"><div class="icon-box"><i class="fa-solid fa-user-check"></i></div><div class="card-info"><h3>اعتماد عضو</h3></div></a>
-                    <a href="https://forms.gle/zHAPz3MA2i3xoDe5A" target="_blank" class="action-card"><div class="icon-box"><i class="fa-solid fa-chart-line"></i></div><div class="card-info"><h3>التقرير الشهري</h3></div></a>
-                    <a href="https://docs.google.com/forms/d/e/1FAIpQLSdPVe18ZGd4S2iyAciFjD7-I9GzHvxo9fslLQMjOez4HevNzQ/viewform?usp=dialog" target="_blank" class="action-card"><div class="icon-box"><i class="fa-solid fa-handshake-angle"></i></div><div class="card-info"><h3>طلب تعيين مساعد</h3></div></a>
-                </div>
-
-                <h3 class="section-subtitle" style="color:var(--danger)">إجراءات تأديبية</h3>
-                <div class="grid-cards">
-                    <!-- نموذج المخالفات الجديد -->
-                    <a href="https://docs.google.com/forms/d/19mKar458Uz2PcJWfd55wzMgiycOsuJaYRuRrEYyDsrQ/viewform" target="_blank" class="action-card danger"><div class="icon-box"><i class="fa-solid fa-gavel"></i></div><div class="card-info"><h3 style="color:var(--danger)">تسجيل مخالفة (أعضاء/إداريين)</h3></div></a>
-                    <a href="https://forms.gle/Bf1UGeL3igWXUseS6" target="_blank" class="action-card danger"><div class="icon-box"><i class="fa-solid fa-user-xmark"></i></div><div class="card-info"><h3 style="color:var(--danger)">فصل/طرد عضو</h3></div></a>
-                </div>
+                <div class="embed-container"><iframe src="https://calendar.google.com/calendar/u/0?cid=ZjdiY2E4N2IzYzljYzY1ZGQyOWYxNTkwMzhiNWJlYjI5NWQ5NzU2YmNkNTM5YTk1NTQ1YjQ5YzVmNGY5Zjc1NUBncm91cC5jYWxlbmRhci5nb29nbGUuY29t"></iframe></div>
+                <a href="https://docs.google.com/forms/d/19mKar458Uz2PcJWfd55wzMgiycOsuJaYRuRrEYyDsrQ/edit" class="action-card danger"><div class="icon-box"><i class="fa-solid fa-gavel"></i></div><div>نموذج مخالفات</div></a>
             </div>
 
-            <!-- ================= الصفحة 6: الإداري (فقط الترقيات والشكاوى) ================= -->
-            <div id="page-admin" class="page-section admin-only">
-                <div class="section-title"><h2>النماذج الإدارية</h2></div>
-                <div class="grid-cards">
-                    <a href="https://docs.google.com/forms/d/e/1FAIpQLSdPVe18ZGd4S2iyAciFjD7-I9GzHvxo9fslLQMjOez4HevNzQ/viewform?usp=publish-editor" target="_blank" class="action-card"><div class="icon-box"><i class="fa-solid fa-ranking-star"></i></div><div class="card-info"><h3>طلب ترقية</h3></div></a>
-                    <a href="https://forms.gle/8eMxL5iM82NoHeFNA" target="_blank" class="action-card"><div class="icon-box"><i class="fa-solid fa-envelope-open-text"></i></div><div class="card-info"><h3>الشكاوى والمقترحات</h3></div></a>
-                </div>
+            <!-- الصفحة 5: الإداري -->
+            <div id="page-admin" class="page-section admin-only" style="display:none;">
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSdPVe18ZGd4S2iyAciFjD7-I9GzHvxo9fslLQMjOez4HevNzQ/viewform?usp=publish-editor" class="action-card"><div>طلب ترقية</div></a>
+                <a href="https://forms.gle/8eMxL5iM82NoHeFNA" class="action-card"><div>شكاوى واقتراحات</div></a>
             </div>
-
         </main>
     </div>
 
     <script>
-        let currentRole = '';
-        
-        // 🔴 تأكد من تحديث رابط الإحصائيات إذا قمت بعمل Deploy جديد بعد التعديل 🔴
-        const STATS_API_URL = "https://script.google.com/macros/s/AKfycby7Wselw-5JOJQf5BqTBOBiC58H2d2A4WC0z7-H2UUddfaigfWPb00K2zT4f7UBySh1pQ/exec";
-        const TASKS_API_URL = "https://script.google.com/macros/s/AKfycbwwQmElZ1eaHbkL7xyV4_JZ5zR7KdDSgajIZQPkdrqrwnkMzZfcGAB3BROKJpdjrMjB/exec";
-
-        function toggleSidebar() {
-            document.getElementById('sidebar').classList.toggle('active');
-            document.querySelector('.sidebar-overlay').classList.toggle('active');
-        }
-
-        function closeSidebarMobile() { if(window.innerWidth <= 992) toggleSidebar(); }
+        // ضع روابط الـ API الخاصة بك هنا
+        const STATS_API = "https://script.google.com/macros/s/AKfycby7Wselw-5JOJQf5BqTBOBiC58H2d2A4WC0z7-H2UUddfaigfWPb00K2zT4f7UBySh1pQ/exec";
+        const TASKS_API = "https://script.google.com/macros/s/AKfycbwwQmElZ1eaHbkL7xyV4_JZ5zR7KdDSgajIZQPkdrqrwnkMzZfcGAB3BROKJpdjrMjB/exec";
 
         function switchLoginTab(role) {
             document.querySelectorAll('.login-tab').forEach(t => t.classList.remove('active'));
             document.querySelectorAll('.login-form').forEach(f => f.classList.remove('active'));
-            document.getElementById('errorMsg').style.display = 'none';
             event.currentTarget.classList.add('active');
             document.getElementById('login-' + role).classList.add('active');
         }
 
-        function handleEnter(e, role) { if (e.key === 'Enter') attemptLogin(role); }
-
         function attemptLogin(role) {
             const pass = document.getElementById(role + 'Pass').value;
-            if (role === 'manager' && pass === 'adminafaq123') grantAccess('manager');
-            else if (role === 'admin' && pass === 'afaqse123') grantAccess('admin');
-            else document.getElementById('errorMsg').style.display = 'block';
+            if((role === 'manager' && pass === 'adminafaq123') || (role === 'admin' && pass === 'afaqse123')) {
+                currentRole = role;
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('dashboardWrapper').style.display = 'flex';
+                // تفعيل صلاحيات العرض
+                if(role === 'admin') {
+                    document.querySelectorAll('.manager-only').forEach(e => e.style.display = 'none');
+                    document.querySelectorAll('.admin-only').forEach(e => e.style.display = 'flex');
+                }
+                fetchStatistics();
+                loadTasks();
+            } else { alert("كلمة المرور خاطئة"); }
         }
 
-        function grantAccess(role) {
-            currentRole = role;
-            document.getElementById('loginScreen').style.display = 'none';
-            document.getElementById('dashboardWrapper').style.display = 'flex';
-            
-            const badge = document.getElementById('userBadge');
-            const managerItems = document.querySelectorAll('.manager-only');
-            const adminItems = document.querySelectorAll('.admin-only');
-
-            if (role === 'admin') {
-                managerItems.forEach(el => el.style.display = 'none');
-                adminItems.forEach(el => el.style.display = 'flex');
-                badge.innerHTML = '<i class="fa-solid fa-user-shield"></i> <span>كادر إداري</span>';
-                document.getElementById('welcomeText').innerText = "مساحة الإداريين";
-            } else {
-                managerItems.forEach(el => el.style.display = ''); 
-                adminItems.forEach(el => el.style.display = 'none');
-                badge.innerHTML = '<i class="fa-solid fa-crown"></i> <span>القيادة العليا</span>';
-                document.getElementById('welcomeText').innerText = "مركز القيادة";
-            }
-
-            showPage('page-home', document.querySelectorAll('.nav-item')[0]);
-            fetchStatistics();
-            loadTasksAPI();
-        }
-
-        function logout() {
-            document.querySelectorAll('.login-input').forEach(i => i.value = '');
-            document.getElementById('errorMsg').style.display = 'none';
-            document.getElementById('dashboardWrapper').style.display = 'none';
-            document.getElementById('loginScreen').style.display = 'flex';
-            if(document.getElementById('sidebar').classList.contains('active')) toggleSidebar();
-        }
-
-        function showPage(pageId, btnElement) {
+        function showPage(pageId, btn) {
             document.querySelectorAll('.page-section').forEach(p => p.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
             document.getElementById(pageId).classList.add('active');
-            if(btnElement) btnElement.classList.add('active');
-            closeSidebarMobile();
+            btn.classList.add('active');
         }
 
         function fetchStatistics() {
-            fetch(STATS_API_URL).then(res => res.json()).then(data => {
-                document.getElementById('countMembers').innerText = data.members || 0;
-                document.getElementById('countAdmins').innerText = data.admins || 0;
-                document.getElementById('g-eafc').innerText = data.games["EA FC"] || 0;
-                document.getElementById('g-mc').innerText = data.games["Minecraft"] || 0;
-                document.getElementById('g-cod').innerText = data.games["Call of Duty"] || 0;
-                document.getElementById('g-ark').innerText = data.games["ARK"] || 0;
-                document.getElementById('g-fn').innerText = data.games["FORTNITE"] || 0;
-                document.getElementById('g-rl').innerText = data.games["Rocket League"] || 0;
-                document.getElementById('g-val').innerText = data.games["VALORANT"] || 0;
-                document.getElementById('p-pc').innerText = data.platforms["PC"] || 0;
-                document.getElementById('p-ps').innerText = data.platforms["PlayStation"] || 0;
-                document.getElementById('p-xbox').innerText = data.platforms["XBOX"] || 0;
-                document.getElementById('p-phone').innerText = data.platforms["Phone"] || 0;
-                document.getElementById('p-nin').innerText = data.platforms["Nintendo"] || 0;
-            }).catch(e => console.log(e));
+            fetch(STATS_API).then(r => r.json()).then(data => {
+                document.getElementById('countMembers').innerText = data.members;
+                document.getElementById('countAdmins').innerText = data.admins;
+            });
         }
 
-        function loadTasksAPI() {
-            const container = document.getElementById("cardsContainer");
-
-            fetch(TASKS_API_URL)
-            .then(res => res.json())
-            .then(data => {
+        function loadTasks() {
+            fetch(TASKS_API).then(r => r.json()).then(data => {
+                const container = document.getElementById('cardsContainer');
                 container.innerHTML = "";
-                if(!data || data.length === 0) {
-                    container.innerHTML = `
-                    <div style="width:100%; grid-column: 1/-1; text-align:center; padding: 40px; background: var(--bg-card); border-radius: 16px;">
-                        <i class="fa-solid fa-clipboard-check" style="font-size: 2.5rem; color: var(--green-light); margin-bottom: 15px;"></i>
-                        <h3 style="color:white;">لا توجد مهام نشطة حالياً</h3>
-                    </div>`;
-                    return;
-                }
-
-                const isManager = (currentRole === "manager");
-
-                data.forEach(taskObj => {
-                    let taskNameKey = Object.keys(taskObj).find(k => k.toLowerCase().includes('task') || k.includes('المهمة'));
-                    let prioKey = Object.keys(taskObj).find(k => k.toLowerCase().includes('priority') || k.includes('الأولوية'));
-                    
-                    let taskTitle = taskNameKey ? taskObj[taskNameKey] : "بدون عنوان";
-                    let priority = prioKey ? taskObj[prioKey] : "عادية";
-                    
-                    let pClass = "low";
-                    if(String(priority).toLowerCase().includes("high") || String(priority).includes("عالية")) pClass = "high";
-                    else if(String(priority).toLowerCase().includes("medium") || String(priority).includes("متوسطة")) pClass = "medium";
-
+                data.forEach(t => {
                     let card = document.createElement('div');
-                    card.className = 'task-card';
-                    
-                    let html = `<div class="priority-badge ${pClass}">${priority}</div>
-                                <div class="task-title">${taskTitle}</div><div style="flex-grow:1;">`;
-                    
-                    for(let key in taskObj) {
-                        if(key !== taskNameKey && key !== prioKey && taskObj[key] !== "") {
-                            let val = taskObj[key];
-                            if(typeof val === 'string' && val.match(/^\d{4}-\d{2}-\d{2}T/)) {
-                                let d = new Date(val);
-                                val = d.toLocaleDateString('ar-SA', { year: 'numeric', month: 'short', day: 'numeric' });
-                            }
-                            html += `<div class="task-field"><strong>${key}</strong> <span style="text-align:left; direction:ltr;">${val}</span></div>`;
-                        }
-                    }
-                    html += `</div>`;
-                    card.innerHTML = html;
-
-                    if(isManager) {
+                    card.className = "task-card";
+                    card.innerHTML = `<div><strong>المهمة:</strong> ${t.Task || 'بدون'}</div><div><strong>الأولوية:</strong> ${t.Priority || 'عادية'}</div>`;
+                    if(currentRole === 'manager') {
                         let btn = document.createElement('button');
                         btn.className = "btn-delete";
-                        btn.innerHTML = '<i class="fa-solid fa-check-double"></i> أرشفة المهمة';
+                        btn.innerText = "أرشفة المهمة";
                         btn.onclick = () => {
-                            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري الأرشفة...';
-                            fetch(`${TASKS_API_URL}?action=delete&taskName=${encodeURIComponent(taskTitle)}`)
-                            .then(r => r.json())
-                            .then(res => {
-                                if(res.success) {
-                                    card.style.transform = "scale(0.8)";
-                                    card.style.opacity = "0";
-                                    setTimeout(() => card.remove(), 300);
-                                } else {
-                                    btn.innerHTML = '<i class="fa-solid fa-xmark"></i> فشل الحذف';
-                                }
-                            });
+                            fetch(TASKS_API + "?action=delete&taskName=" + encodeURIComponent(t.Task))
+                            .then(() => card.remove());
                         };
                         card.appendChild(btn);
                     }
                     container.appendChild(card);
                 });
-            }).catch(e => {
-                container.innerHTML = `<div style="width:100%; grid-column: 1/-1; text-align:center; padding:20px; color:var(--danger);">فشل جلب المهام.</div>`;
             });
         }
+        
+        function logout() { location.reload(); }
     </script>
 </body>
 </html>
