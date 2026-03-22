@@ -61,7 +61,6 @@
         .logout-btn { width: 100%; background: rgba(239, 68, 68, 0.1); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.2); padding: 15px; border-radius: 14px; font-weight: 800; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 10px; transition: 0.3s; font-size: 1rem;}
         .logout-btn:hover { background: var(--danger); color: white; transform: translateY(-2px); box-shadow: 0 8px 15px rgba(239, 68, 68, 0.3);}
         
-        /* معالجة التشوه الأفقي الذي ظهر لك سابقاً */
         .main-content { margin-right: var(--sidebar-width); padding: 40px 50px; transition: 0.3s; width: calc(100% - var(--sidebar-width)); display: block; min-height: 100vh;}
         
         .top-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; background: rgba(24, 24, 27, 0.8); backdrop-filter: blur(12px); padding: 25px 35px; border-radius: 20px; border: 1px solid var(--border); z-index: 50; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
@@ -74,7 +73,7 @@
         .menu-toggle:active { background: var(--border); }
 
         .page-section { display: none; animation: fadeIn 0.5s ease forwards; padding-bottom: 50px; width: 100%; }
-        .page-section.active { display: block; } /* تمنع التداخل الأفقي */
+        .page-section.active { display: block; }
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
@@ -109,8 +108,8 @@
         .stat-label { font-size: 1.15rem; font-weight: 800; color: rgba(255,255,255,0.9); z-index: 2;}
         .stat-card.outline .stat-label { color: var(--text-muted); }
 
-        .mini-stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 15px; margin-bottom: 50px; width: 100%; }
-        .mini-stat { background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px; padding: 25px 20px; text-align: center; transition: all 0.3s ease; display: flex; flex-direction: column; align-items: center; justify-content: center;}
+        .mini-stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 15px; margin-bottom: 50px; width: 100%; }
+        .mini-stat { background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px; padding: 25px 15px; text-align: center; transition: all 0.3s ease; display: flex; flex-direction: column; align-items: center; justify-content: center;}
         .mini-stat i { font-size: 2rem; color: var(--text-muted); margin-bottom: 15px; transition: 0.3s; }
         .mini-stat:hover { border-color: var(--green-light); transform: translateY(-5px); background: var(--bg-card-hover); box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
         .mini-stat:hover i { color: var(--green-light); transform: scale(1.1);}
@@ -287,7 +286,16 @@
                  </div>
                 </div>
 
-                <div class="section-title"><h2>القوة الضاربة (معدل توزيع الألعاب)</h2></div>
+                <div class="section-title"><h2>منصات اللعب (الأجهزة)</h2></div>
+                <div class="mini-stats-grid">
+                    <div class="mini-stat"><i class="fa-solid fa-desktop"></i><div class="num" id="p-pc">-</div><div class="label">PC</div></div>
+                    <div class="mini-stat"><i class="fa-brands fa-playstation"></i><div class="num" id="p-ps">-</div><div class="label">PlayStation</div></div>
+                    <div class="mini-stat"><i class="fa-brands fa-xbox"></i><div class="num" id="p-xbox">-</div><div class="label">XBOX</div></div>
+                    <div class="mini-stat"><i class="fa-solid fa-mobile-screen"></i><div class="num" id="p-phone">-</div><div class="label">Phone</div></div>
+                    <div class="mini-stat"><i class="fa-solid fa-gamepad"></i><div class="num" id="p-nin">-</div><div class="label">Nintendo</div></div>
+                </div>
+
+                <div class="section-title" style="margin-top:20px;"><h2>القوة الضاربة (معدل توزيع الألعاب)</h2></div>
                 <div class="mini-stats-grid">
                     <div class="mini-stat"><i class="fa-solid fa-futbol"></i><div class="num" id="g-eafc">-</div><div class="label">EA FC</div></div>
                     <div class="mini-stat"><i class="fa-solid fa-cubes"></i><div class="num" id="g-mc">-</div><div class="label">Minecraft</div></div>
@@ -478,8 +486,10 @@
     </div>
 
     <script>
-        // ======= الرابط الجديد الذي أرسلته تم إضافته هنا بنجاح =======
-        const STATS_API_URL = "https://script.google.com/macros/s/AKfycbwswMMhp2n9fVfKqb9fQpCLmcNJSOwYccBk03SRo9_049mKQmPoOX8AfUkoSTTvgEX8OQ/exec";
+        // رابط جلب الإحصائيات (CSV المباشر)
+        const STATS_DIRECT_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRixEFqwtxKkKM-XM7rgWN4XdJtEay88O4LhQ6eTrtjfAkQqtH-DnArd14vY66aYBRzo6L4_0QXpvtV/pub?output=csv";
+        
+        // رابط المهام (Apps Script)
         const TASKS_API_URL = "https://script.google.com/macros/s/AKfycbwwQmElZ1eaHbkL7xyV4_JZ5zR7KdDSgajIZQPkdrqrwnkMzZfcGAB3BROKJpdjrMjB/exec";
 
         let actualRole = ''; 
@@ -564,7 +574,6 @@
                 document.getElementById('welcomeText').innerText = "مساحة الإداريين المركزية";
                 document.getElementById('welcomeSubtext').innerText = "العمليات التنفيذية والمتابعة اليومية للقطاعات الخاصة";
             } else {
-                
                 managerItems.forEach(el => {
                     if (el.tagName === 'A') el.style.display = 'flex';
                     else if (el.classList.contains('grid-cards')) el.style.display = 'grid';
@@ -642,24 +651,107 @@
             notesArea.value = localStorage.getItem(`afaq_notes_${actualRole}`) || '';
         }
 
-        // ======= تم تضمين أداة منع تعليق الكاش لضمان جلب الإحصائيات الحية =======
+        // ==========================================
+        // جلب الإحصائيات (أعضاء، ألعاب، إداريين، منصات)
+        // ==========================================
         function fetchStatistics() {
-            const liveUrl = STATS_API_URL + "?nocache=" + new Date().getTime();
-            
-            fetch(liveUrl).then(res => res.json()).then(data => {
-                document.getElementById('countMembers').innerText = data.members || 0;
-                document.getElementById('countAdmins').innerText = data.admins || 0;
+            fetch(STATS_DIRECT_URL + "&nocache=" + new Date().getTime())
+            .then(res => res.text())
+            .then(csvText => {
                 
-                document.getElementById('g-eafc').innerText = (data.games && data.games["EA FC"]) ? data.games["EA FC"] : 0;
-                document.getElementById('g-mc').innerText = (data.games && data.games["Minecraft"]) ? data.games["Minecraft"] : 0;
-                document.getElementById('g-cod').innerText = (data.games && data.games["Call of Duty"]) ? data.games["Call of Duty"] : 0;
-                document.getElementById('g-ark').innerText = (data.games && data.games["ARK"]) ? data.games["ARK"] : 0;
-                document.getElementById('g-fn').innerText = (data.games && data.games["FORTNITE"]) ? data.games["FORTNITE"] : 0;
-                document.getElementById('g-rl').innerText = (data.games && data.games["Rocket League"]) ? data.games["Rocket League"] : 0;
-                document.getElementById('g-val').innerText = (data.games && data.games["VALORANT"]) ? data.games["VALORANT"] : 0;
-            }).catch(e => console.log(e));
+                function parseCSV(str) {
+                    var arr = [], quote = false, row = [], col = "";
+                    for (var c = 0; c < str.length; c++) {
+                        var cc = str[c], nc = str[c+1];
+                        if (cc == '"' && quote && nc == '"') { col += cc; ++c; continue; }
+                        if (cc == '"') { quote = !quote; continue; }
+                        if (cc == ',' && !quote) { row.push(col.trim()); col = ""; continue; }
+                        if (cc == '\r' && nc == '\n' && !quote) { row.push(col.trim()); arr.push(row); col = ""; row = []; ++c; continue; }
+                        if (cc == '\n' && !quote) { row.push(col.trim()); arr.push(row); col = ""; row = []; continue; }
+                        if (cc == '\r' && !quote) { row.push(col.trim()); arr.push(row); col = ""; row = []; continue; }
+                        col += cc;
+                    }
+                    if (col !== "") { row.push(col.trim()); }
+                    if (row.length > 0) { arr.push(row); }
+                    return arr;
+                }
+
+                const rows = parseCSV(csvText);
+                
+                let stats = {
+                    members: 0,
+                    admins: 0,
+                    games: { "EA FC": 0, "Minecraft": 0, "Call of Duty": 0, "ARK": 0, "FORTNITE": 0, "Rocket League": 0, "VALORANT": 0 },
+                    platforms: { "PC": 0, "PlayStation": 0, "XBOX": 0, "Phone": 0, "Nintendo": 0 }
+                };
+
+                for (let i = 1; i < rows.length; i++) {
+                    const row = rows[i];
+                    
+                    if(row.length < 11) continue; 
+
+                    const name = row[5] ? row[5] : "";
+                    const platform = row[9] ? row[9] : ""; // المنصة
+                    const game = row[10] ? row[10] : "";   // اللعبة
+                    const role = row[11] ? row[11] : "";   // الصفة
+                    
+                    if (name !== "") {
+                        stats.members++; 
+
+                        // حساب الإداريين (مطابقة دقيقة لما في النموذج)
+                        if (role.includes("اداري")) {
+                            stats.admins++;
+                        }
+
+                        // حساب الألعاب
+                        if (game.includes("EA FC")) stats.games["EA FC"]++;
+                        if (game.includes("Minecraft")) stats.games["Minecraft"]++;
+                        if (game.includes("Call of Duty")) stats.games["Call of Duty"]++;
+                        if (game.includes("ARK")) stats.games["ARK"]++;
+                        if (game.includes("FORTNITE")) stats.games["FORTNITE"]++;
+                        if (game.includes("Rocket League")) stats.games["Rocket League"]++;
+                        if (game.includes("VALORANT")) stats.games["VALORANT"]++;
+
+                        // حساب المنصات
+                        if (platform.includes("PC")) stats.platforms["PC"]++;
+                        if (platform.includes("PlayStation")) stats.platforms["PlayStation"]++;
+                        if (platform.includes("XBOX")) stats.platforms["XBOX"]++;
+                        if (platform.includes("Phone")) stats.platforms["Phone"]++;
+                        if (platform.includes("Nintendo")) stats.platforms["Nintendo"]++;
+                    }
+                }
+
+                // تحديث واجهة الأعضاء والإداريين
+                document.getElementById('countMembers').innerText = stats.members;
+                document.getElementById('countAdmins').innerText = stats.admins;
+
+                // تحديث واجهة الألعاب
+                document.getElementById('g-eafc').innerText = stats.games["EA FC"];
+                document.getElementById('g-mc').innerText = stats.games["Minecraft"];
+                document.getElementById('g-cod').innerText = stats.games["Call of Duty"];
+                document.getElementById('g-ark').innerText = stats.games["ARK"];
+                document.getElementById('g-fn').innerText = stats.games["FORTNITE"];
+                document.getElementById('g-rl').innerText = stats.games["Rocket League"];
+                document.getElementById('g-val').innerText = stats.games["VALORANT"];
+
+                // تحديث واجهة المنصات
+                document.getElementById('p-pc').innerText = stats.platforms["PC"];
+                document.getElementById('p-ps').innerText = stats.platforms["PlayStation"];
+                document.getElementById('p-xbox').innerText = stats.platforms["XBOX"];
+                document.getElementById('p-phone').innerText = stats.platforms["Phone"];
+                document.getElementById('p-nin').innerText = stats.platforms["Nintendo"];
+                
+            })
+            .catch(err => {
+                console.error("خطأ في جلب البيانات:", err);
+                document.getElementById('countMembers').innerText = "خطأ";
+                document.getElementById('countAdmins').innerText = "خطأ";
+            });
         }
 
+        // ==========================================
+        // نظام المهام
+        // ==========================================
         function loadTasksAPI() {
             const container = document.getElementById("cardsContainer");
             fetch(TASKS_API_URL).then(res => res.json()).then(data => {
